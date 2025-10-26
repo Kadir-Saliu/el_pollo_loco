@@ -1,41 +1,23 @@
 class World {
   character = new Character();
-  enemies = [new Chicken(), new Chicken(), new Chicken()];
-  clouds = [new Cloud()];
+  enemies = level1.enemies;
+  clouds = level1.clouds;
+   backgroundObjects = level1.backgroundObjects;
   canvas;
   ctx;
   keyboard;
   camera_x = 0;
-  backgroundObjects = [
-    new BackgroundObject("img/5_background/layers/air.png", -720),
-    new BackgroundObject("img/5_background/layers/3_third_layer/2.png", -720),
-    new BackgroundObject("img/5_background/layers/2_second_layer/2.png", -720),
-    new BackgroundObject("img/5_background/layers/1_first_layer/2.png", -720),
-    new BackgroundObject("img/5_background/layers/air.png", 0),
-    new BackgroundObject("img/5_background/layers/3_third_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/2_second_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/1_first_layer/1.png", 0),
-    new BackgroundObject("img/5_background/layers/air.png", 720),
-    new BackgroundObject("img/5_background/layers/3_third_layer/2.png", 720),
-    new BackgroundObject("img/5_background/layers/2_second_layer/2.png", 720),
-    new BackgroundObject("img/5_background/layers/1_first_layer/2.png", 720),
-
-      new BackgroundObject("img/5_background/layers/air.png", 720*2),
-    new BackgroundObject("img/5_background/layers/3_third_layer/1.png", 720*2),
-    new BackgroundObject("img/5_background/layers/2_second_layer/1.png", 720*2),
-    new BackgroundObject("img/5_background/layers/1_first_layer/1.png", 720*2),
-    new BackgroundObject("img/5_background/layers/air.png", 720*3),
-    new BackgroundObject("img/5_background/layers/3_third_layer/2.png", 720*3),
-    new BackgroundObject("img/5_background/layers/2_second_layer/2.png", 720*3),
-    new BackgroundObject("img/5_background/layers/1_first_layer/2.png", 720*3),
-  ];
+ 
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
     this.canvas = canvas;
     this.keyboard = keyboard;
-    this.draw();
+    // ensure character has a reference to this world before animation/draw starts
     this.setWorld();
+    // start character animations now that world and keyboard are available
+    this.character.animate();
+    this.draw();
   }
 
   setWorld() {
