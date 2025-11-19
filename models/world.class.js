@@ -6,7 +6,7 @@ class World {
   keyboard;
   camera_x = 0;
   statusBar = new StatusBar();
-  throwableObject = []
+  throwableObject = [];
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -25,26 +25,28 @@ class World {
 
   run() {
     setInterval(() => {
-     this.checkCollision();
-     this.checkThrowObjects();
+      this.checkCollision();
+      this.checkThrowObjects();
     }, 200);
   }
 
-  checkThrowObjects(){
-    if(this.keyboard.D){
-      let bottle = new ThrowableObject(this.character.x +100, this.character.y + 100 );
-      this.throwableObject.push(bottle)
+  checkThrowObjects() {
+    if (this.keyboard.D) {
+      let bottle = new ThrowableObject(
+        this.character.x + 100,
+        this.character.y + 100
+      );
+      this.throwableObject.push(bottle);
     }
   }
 
-  checkCollision(){
-      this.level.enemies.forEach((enemy) => {
-        if (this.character.isColliding(enemy)) {
-         
-          this.character.hit();
-           this.statusBar.setPercentage(this.character.energy)
-        }
-      });
+  checkCollision() {
+    this.level.enemies.forEach((enemy) => {
+      if (this.character.isColliding(enemy)) {
+        this.character.hit();
+        this.statusBar.setPercentage(this.character.energy);
+      }
+    });
   }
 
   draw() {
@@ -53,16 +55,15 @@ class World {
     this.ctx.translate(this.camera_x, 0);
     this.addObjectToMap(this.level.backgroundObjects);
 
-
     this.ctx.translate(-this.camera_x, 0);
     this.addToMap(this.statusBar);
     this.ctx.translate(this.camera_x, 0);
 
-
     this.addToMap(this.character);
     this.addObjectToMap(this.level.clouds);
     this.addObjectToMap(this.level.enemies);
-    this.addObjectToMap(this.throwableObject)
+    this.addObjectToMap(this.throwableObject);
+    this.addObjectToMap(this.level.coin)
 
     this.ctx.translate(-this.camera_x, 0);
 
