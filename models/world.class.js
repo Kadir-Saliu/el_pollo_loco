@@ -33,17 +33,16 @@ class World {
   }
 
   checkThrowObjects() {
-  if (this.keyboard.D && this.character.bottle > 0) {
-    let bottle = new ThrowableObject(
-      this.character.x + 50,
-      this.character.y + 50
-    );
-    this.throwableObject.push(bottle);
-    this.character.bottle -= 20;
-    this.bottleStatusBar.setPercentage(this.character.bottle);
+    if (this.keyboard.D && this.character.bottle > 0) {
+      let bottle = new ThrowableObject(
+        this.character.x + 50,
+        this.character.y + 50
+      );
+      this.throwableObject.push(bottle);
+      this.character.bottle = Math.max(0, this.character.bottle - 20);
+      this.bottleStatusBar.setPercentage(this.character.bottle);
+    }
   }
-}
-
 
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
