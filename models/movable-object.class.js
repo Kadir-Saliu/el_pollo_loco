@@ -6,6 +6,7 @@ class MovableObject extends DrawableObject {
   energy = 100;
   lastHit = 0;
   coin = 0;
+  bottle = 0;
 
   applyGravity() {
     setInterval(() => {
@@ -54,6 +55,10 @@ class MovableObject extends DrawableObject {
 
   getCoin() {
     return (this.coin += 20);
+  }
+
+  getBottle(){
+    return (this.bottle += 20);
   }
 
   playAnimation(images) {
