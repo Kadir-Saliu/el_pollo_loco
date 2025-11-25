@@ -57,7 +57,7 @@ class MovableObject extends DrawableObject {
     return (this.coin += 20);
   }
 
-  getBottle(){
+  getBottle() {
     return (this.bottle += 20);
   }
 
@@ -80,5 +80,6 @@ class MovableObject extends DrawableObject {
 
   jump() {
     this.speedY = 30;
+    this.world.character.jumpAudio.play();
   }
 }
