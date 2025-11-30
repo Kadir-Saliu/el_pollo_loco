@@ -5,6 +5,7 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
+  startScreen = new StartScreen();
   statusBar = new StatusBar();
   coinStatusBar = new CoinStatusBar();
   bottleStatusBar = new BottleStatusBar();
@@ -76,6 +77,7 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.ctx.translate(this.camera_x, 0);
+    
     this.addObjectToMap(this.level.backgroundObjects);
 
     this.ctx.translate(-this.camera_x, 0);
@@ -90,6 +92,7 @@ class World {
     this.addObjectToMap(this.level.coin);
     this.addObjectToMap(this.level.bottles);
     this.addObjectToMap(this.throwableObject);
+
 
     this.ctx.translate(-this.camera_x, 0);
 

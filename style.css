@@ -1,25 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Splash", cursive;
+}
+
 body {
+  background-image: url("./img/assets/desert-5385998_640.png");
+  background-position: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-image: url("./img/assets/desert-5385998_640.png");
-  background-position: center;;
+  justify-content: center;
+  height: 100vh;
 }
+
+.d_flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-screen {
+  background-image: url("../img/9_intro_outro_screens/start/startscreen_1.png");
+  background-size: cover;
+  justify-content: space-between;
+  width: 720px;
+  height: 480px;
+  padding-top: 50px;
+  padding-bottom: 30px;
+}
+
+.start-screen h2 {
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  text-shadow: 2px 2px 4px #000000;
+}
+
 
 canvas {
   background-color: black;
-  display: block;
+  display: none;
 }
 
-h1{
-  font-family: "Splash", cursive;
+h1 {
   font-weight: 800;
   font-style: normal;
   font-size: 50px;
 }
 
 @font-face {
-  font-family:"splash"; ;
+  font-family: "splash";
   src: url("./fonts/Splash-Regular.ttf");
 }
 
