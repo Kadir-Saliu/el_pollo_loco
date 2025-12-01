@@ -47,6 +47,17 @@ body {
   text-shadow: 2px 2px 4px #000000;
 }
 
+.end-screen {
+  background-image: url("../img/You won, you lost/You lost.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  justify-content: center;
+  width: 720px;
+  height: 480px;
+  padding-top: 50px;
+  padding-bottom: 30px;
+}
+
 
 canvas {
   background-color: black;

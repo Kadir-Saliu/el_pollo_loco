@@ -7,6 +7,7 @@ class MovableObject extends DrawableObject {
   lastHit = 0;
   coin = 0;
   bottle = 0;
+  endScreen = document.getElementById('endScreen')
 
   applyGravity() {
     setInterval(() => {
@@ -38,6 +39,7 @@ class MovableObject extends DrawableObject {
     this.energy -= 5;
     if (this.energy < 0) {
       this.energy = 0;
+      this.stopGame();
     } else {
       this.lastHit = new Date().getTime();
     }
@@ -81,5 +83,11 @@ class MovableObject extends DrawableObject {
   jump() {
     this.speedY = 30;
     this.world.character.jumpAudio.play();
+  }
+
+  stopGame(){
+   
+     canvas.classList.add("d_none");
+     endScreen.classList.remove('d_none')
   }
 }
