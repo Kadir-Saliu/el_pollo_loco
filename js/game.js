@@ -3,8 +3,14 @@ let ctx;
 let world;
 let keyboard = new Keyboard();
 
-function init() {
+function init() {}
+
+function startGame() {
+  let startScreen = document.getElementById("startScreen");
+  startScreen.classList.add("d_none");
+
   canvas = document.getElementById("canvas");
+  canvas.classList.remove("d_none");
   world = new World(canvas, keyboard);
 }
 
