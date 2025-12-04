@@ -49,7 +49,7 @@ body {
 
 .end-screen {
   background-image: url("../img/You won, you lost/You lost.png");
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   justify-content: center;
   width: 720px;

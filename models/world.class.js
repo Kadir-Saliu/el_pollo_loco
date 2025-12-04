@@ -45,12 +45,43 @@ class World {
   }
 
   checkCollision() {
-    this.level.enemies.forEach((enemy) => {
-      if (this.character.isColliding(enemy)) {
-        this.character.hit();
-        this.statusBar.setPercentage(this.character.energy);
-      }
-    });
+    // this.level.enemies.forEach((enemy) => {
+    //   if (this.character.isColliding(enemy) && this.character.isAboveGround(enemy)) {
+    //     enemy.die(enemy.IMAGES_DEATH);
+    //     this.character.jump();
+    //   } else  if (this.character.isColliding(enemy) && !this.character.isAbove(enemy) ) {
+    //     this.character.hit();
+    //     console.log(this.character.isAboveGround());
+    //     this.statusBar.setPercentage(this.character.energy);
+    //   } else if(enemy.dead === true){
+    //     !this.character.hit();
+    //   }
+    // });
+this.level.enemies.forEach((enemy) => {
+  if (!enemy.dead && this.character.isColliding(enemy)) {
+    if (this.character.isAbove(enemy)) {
+      console.log('🔴 COLLISION DETECTED:', {
+        characterY: this.character.y,
+        characterHeight: this.character.height,
+        characterBottomY: this.character.y + this.character.height,
+        enemyY: enemy.y,
+        enemyHeight: enemy.height,
+        isAboveResult: this.character.isAbove(enemy),
+        isCollidingResult: this.character.isColliding(enemy)
+      });
+
+      console.log('✅ ENEMY DIE! (Character ist oben)');
+      enemy.die();
+      this.character.jump();
+    } else {
+      console.log('❌ CHARACTER HIT! (Character ist unten oder Seite)');
+      this.character.hit();
+      this.statusBar.setPercentage(this.character.energy);
+    }
+  }
+});
+
+ 
 
     this.level.coin = this.level.coin.filter((coin) => {
       if (this.character.isColliding(coin)) {
@@ -104,10 +135,8 @@ class World {
     if (mo.otherDirection) {
       this.flipImage(mo);
     }
-
     mo.draw(this.ctx);
     mo.drawFrame(this.ctx);
-
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }

@@ -26,6 +26,13 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  isAbove(mo){
+    console.log(this.y + this.height < mo.y);
+    
+    return this.y + this.height < mo.y + 80
+  }
+  
+
   isColliding(mo) {
     return (
       this.x + this.width > mo.x &&
@@ -82,7 +89,7 @@ class MovableObject extends DrawableObject {
 
   jump() {
     this.speedY = 30;
-    this.world.character.jumpAudio.play();
+    // this.world.character.jumpAudio.play();
   }
 
   stopGame(){
