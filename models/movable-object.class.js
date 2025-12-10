@@ -7,7 +7,7 @@ class MovableObject extends DrawableObject {
   lastHit = 0;
   coin = 0;
   bottle = 0;
-  endScreen = document.getElementById('endScreen')
+  endScreen = document.getElementById("endScreen");
 
   applyGravity() {
     setInterval(() => {
@@ -26,12 +26,10 @@ class MovableObject extends DrawableObject {
     }
   }
 
-  isAbove(mo){
+  isAbove(mo) {
     console.log(this.y + this.height < mo.y);
-    
-    return this.y + this.height < mo.y + 80
+    return this.y + this.height < mo.y + 80;
   }
-  
 
   isColliding(mo) {
     return (
@@ -92,9 +90,8 @@ class MovableObject extends DrawableObject {
     // this.world.character.jumpAudio.play();
   }
 
-  stopGame(){
-   
-     canvas.classList.add("d_none");
-     endScreen.classList.remove('d_none')
+  stopGame() {
+    canvas.classList.add("d_none");
+    endScreen.classList.remove("d_none");
   }
 }

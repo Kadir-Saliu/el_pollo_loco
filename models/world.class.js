@@ -57,31 +57,33 @@ class World {
     //     !this.character.hit();
     //   }
     // });
-this.level.enemies.forEach((enemy) => {
-  if (!enemy.dead && this.character.isColliding(enemy)) {
-    if (this.character.isAbove(enemy)) {
-      console.log('🔴 COLLISION DETECTED:', {
-        characterY: this.character.y,
-        characterHeight: this.character.height,
-        characterBottomY: this.character.y + this.character.height,
-        enemyY: enemy.y,
-        enemyHeight: enemy.height,
-        isAboveResult: this.character.isAbove(enemy),
-        isCollidingResult: this.character.isColliding(enemy)
-      });
 
-      console.log('✅ ENEMY DIE! (Character ist oben)');
-      enemy.die();
-      this.character.jump();
-    } else {
-      console.log('❌ CHARACTER HIT! (Character ist unten oder Seite)');
-      this.character.hit();
-      this.statusBar.setPercentage(this.character.energy);
-    }
-  }
-});
+    this.level.enemies.forEach((enemy) => {
+      if (!enemy.dead && this.character.isColliding(enemy)) {
+        if (this.character.isAbove(enemy)) {
+          console.log("🔴 COLLISION DETECTED:", {
+            characterY: this.character.y,
+            characterHeight: this.character.height,
+            characterBottomY: this.character.y + this.character.height,
+            enemyY: enemy.y,
+            enemyHeight: enemy.height,
+            isAboveResult: this.character.isAbove(enemy),
+            isCollidingResult: this.character.isColliding(enemy),
+          });
 
- 
+          console.log("✅ ENEMY DIE! (Character ist oben)");
+          enemy.die();
+          this.character.jump();
+          setTimeout(() => {
+            this.level.enemies = this.level.enemies.filter((enemy) => !enemy.dead);
+          }, 400);
+        } else {
+          console.log("❌ CHARACTER HIT! (Character ist unten oder Seite)");
+          this.character.hit();
+          this.statusBar.setPercentage(this.character.energy);
+        }
+      }
+    });
 
     this.level.coin = this.level.coin.filter((coin) => {
       if (this.character.isColliding(coin)) {
