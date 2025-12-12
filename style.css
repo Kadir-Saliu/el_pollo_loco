@@ -31,7 +31,7 @@ body {
 }
 
 .start-screen {
-  background-image: url("../img/9_intro_outro_screens/start/startscreen_1.png");
+  background-image: url("./img/9_intro_outro_screens/start/startscreen_1.png");
   background-size: cover;
   justify-content: space-between;
   width: 720px;
@@ -48,7 +48,7 @@ body {
 }
 
 .end-screen {
-  background-image: url("../img/You won, you lost/You lost.png");
+  background-image: url("./img/You won, you lost/You lost.png");
   background-size: contain;
   background-repeat: no-repeat;
   justify-content: center;

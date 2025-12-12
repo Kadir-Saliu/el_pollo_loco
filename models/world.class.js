@@ -9,6 +9,8 @@ class World {
   coinStatusBar = new CoinStatusBar();
   bottleStatusBar = new BottleStatusBar();
   throwableObject = [];
+  cooldown = 2000; 
+  lastBottleThrow = 0; 
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -29,39 +31,40 @@ class World {
     setInterval(() => {
       this.checkCollision();
       this.checkThrowObjects();
-    }, 1000/60);
+    }, 1000 / 60);
   }
 
-  checkThrowObjects() {
+   checkThrowObjects() { 
     if (this.keyboard.D && this.character.bottle > 0) {
-      let bottle = new ThrowableObject(
-        this.character.x + 50,
-        this.character.y + 50
-      );
-      this.throwableObject.push(bottle);
-      this.character.bottle = Math.max(0, this.character.bottle - 20);
-      this.bottleStatusBar.setPercentage(this.character.bottle);
+      const now = new Date().getTime();
+      if ((now - this.lastBottleThrow) > this.cooldown) {
+       this.throwBottle();
+      }
     }
   }
 
+  throwBottle(){
+        this.lastBottleThrow = new Date().getTime();
+
+        let bottle = new ThrowableObject(
+          this.character.x + 50,
+          this.character.y + 50
+        );
+        this.throwableObject.push(bottle);
+        this.character.bottle = Math.max(0, this.character.bottle - 20);
+        this.bottleStatusBar.setPercentage(this.character.bottle);
+  }
+
   checkCollision() {
+    this.checkCollisionWithCharacter();
+    this.checkCollisionWithCoin();
+    this.checkCollisionWhithBottle();
+  }
+
+  checkCollisionWithCharacter() {
     this.level.enemies.forEach((enemy) => {
       if (!enemy.dead && this.character.isColliding(enemy)) {
-        const characterAbove = this.character.isAbove(enemy);
-        const bottleHitsEnemy = this.throwableObject.some(
-          (bottle) => bottle.isColliding(enemy) && bottle.isAbove(enemy)
-        );
-        console.log(bottleHitsEnemy);
-        
-
-        if (characterAbove || bottleHitsEnemy) {
-            if (bottleHitsEnemy) {
-          const hittingBottle = this.throwableObject.find(
-            (bottle) => bottle && bottle.isColliding && bottle.isAbove && bottle.isColliding(enemy) && bottle.isAbove(enemy)
-            
-          );
-           enemy.die(hittingBottle);
-        }
+        if (this.character.isAbove(enemy)) {
           enemy.die();
           this.character.jump();
           setTimeout(() => {
@@ -76,7 +79,9 @@ class World {
         }
       }
     });
+  }
 
+  checkCollisionWithCoin() {
     this.level.coin = this.level.coin.filter((coin) => {
       if (this.character.isColliding(coin)) {
         this.character.getCoin();
@@ -86,7 +91,9 @@ class World {
       }
       return true;
     });
+  }
 
+  checkCollisionWhithBottle() {
     this.level.bottles = this.level.bottles.filter((bottle) => {
       if (this.character.isColliding(bottle)) {
         this.character.getBottle();
