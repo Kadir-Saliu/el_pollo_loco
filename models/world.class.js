@@ -69,7 +69,7 @@ class World {
         if (this.character.isAbove(enemy)) {
           enemy.die();
           this.character.jump();
-          this.removeDiedChicken();
+          this.removeDeadChicken();
         } else {
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
@@ -106,13 +106,13 @@ class World {
       this.throwableObject.forEach((bottle) => {
         if (bottle.isColliding(enemy)) {
           enemy.die();
-          this.removeDiedChicken(enemy);
+          this.removeDeadChicken(enemy);
         }
       });
     });
   }
 
-  removeDiedChicken() {
+  removeDeadChicken() {
     setTimeout(() => {
       this.level.enemies = this.level.enemies.filter((enemy) => !enemy.dead);
     }, 400);
