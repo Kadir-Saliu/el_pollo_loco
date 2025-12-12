@@ -8,6 +8,7 @@ class World {
   statusBar = new StatusBar();
   coinStatusBar = new CoinStatusBar();
   bottleStatusBar = new BottleStatusBar();
+  endbossStautsBar = new EndbossStatusBar();
 
   throwableObject = [];
   cooldown = 2000;
@@ -129,6 +130,10 @@ class World {
     this.addToMap(this.statusBar);
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.bottleStatusBar);
+    if (this.character.x > 1300) {
+       this.addToMap(this.endbossStautsBar);
+    }
+   
     this.ctx.translate(this.camera_x, 0);
 
     this.addToMap(this.character);
@@ -155,6 +160,7 @@ class World {
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }
+    
   }
 
   addObjectToMap(objects) {

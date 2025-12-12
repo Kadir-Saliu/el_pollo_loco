@@ -1,6 +1,6 @@
 class DrawableObject {
   img;
-  imageChache = {};
+  imageCache = {};
   currentImage = 0;
   x = 120;
   y = 280;
@@ -35,7 +35,7 @@ class DrawableObject {
     arr.forEach((path) => {
       let img = new Image();
       img.src = path;
-      this.imageChache[path] = img;
+      this.imageCache[path] = img;
     });
   }
 }
