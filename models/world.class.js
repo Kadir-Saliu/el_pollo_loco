@@ -29,7 +29,7 @@ class World {
     setInterval(() => {
       this.checkCollision();
       this.checkThrowObjects();
-    }, 200);
+    }, 1000/60);
   }
 
   checkThrowObjects() {
@@ -45,37 +45,29 @@ class World {
   }
 
   checkCollision() {
-    // this.level.enemies.forEach((enemy) => {
-    //   if (this.character.isColliding(enemy) && this.character.isAboveGround(enemy)) {
-    //     enemy.die(enemy.IMAGES_DEATH);
-    //     this.character.jump();
-    //   } else  if (this.character.isColliding(enemy) && !this.character.isAbove(enemy) ) {
-    //     this.character.hit();
-    //     console.log(this.character.isAboveGround());
-    //     this.statusBar.setPercentage(this.character.energy);
-    //   } else if(enemy.dead === true){
-    //     !this.character.hit();
-    //   }
-    // });
-
     this.level.enemies.forEach((enemy) => {
       if (!enemy.dead && this.character.isColliding(enemy)) {
-        if (this.character.isAbove(enemy)) {
-          console.log("🔴 COLLISION DETECTED:", {
-            characterY: this.character.y,
-            characterHeight: this.character.height,
-            characterBottomY: this.character.y + this.character.height,
-            enemyY: enemy.y,
-            enemyHeight: enemy.height,
-            isAboveResult: this.character.isAbove(enemy),
-            isCollidingResult: this.character.isColliding(enemy),
-          });
+        const characterAbove = this.character.isAbove(enemy);
+        const bottleHitsEnemy = this.throwableObject.some(
+          (bottle) => bottle.isColliding(enemy) && bottle.isAbove(enemy)
+        );
+        console.log(bottleHitsEnemy);
+        
 
-          console.log("✅ ENEMY DIE! (Character ist oben)");
+        if (characterAbove || bottleHitsEnemy) {
+            if (bottleHitsEnemy) {
+          const hittingBottle = this.throwableObject.find(
+            (bottle) => bottle && bottle.isColliding && bottle.isAbove && bottle.isColliding(enemy) && bottle.isAbove(enemy)
+            
+          );
+           enemy.die(hittingBottle);
+        }
           enemy.die();
           this.character.jump();
           setTimeout(() => {
-            this.level.enemies = this.level.enemies.filter((enemy) => !enemy.dead);
+            this.level.enemies = this.level.enemies.filter(
+              (enemy) => !enemy.dead
+            );
           }, 400);
         } else {
           console.log("❌ CHARACTER HIT! (Character ist unten oder Seite)");
