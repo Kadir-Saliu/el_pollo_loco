@@ -42,7 +42,7 @@ class MovableObject extends DrawableObject {
 
   hit() {
     this.energy -= 5;
-    if (this.energy < 0) {
+    if (this.energy <0) {
       this.energy = 0;
       this.stopGame();
     } else {
@@ -52,8 +52,9 @@ class MovableObject extends DrawableObject {
 
   hitEndboss(){
     this.energy -= 20;
-    if (this.energy < 0) {
+    if (this.energy <= 0) {
       this.energy = 0;
+      this.winGame();
     } else {
       this.lastHit = new Date().getTime();
     }
@@ -103,5 +104,10 @@ class MovableObject extends DrawableObject {
   stopGame() {
     canvas.classList.add("d_none");
     endScreen.classList.remove("d_none");
+  }
+
+  winGame() {
+    canvas.classList.add("d_none");
+    winScreen.classList.remove("d_none");
   }
 }
