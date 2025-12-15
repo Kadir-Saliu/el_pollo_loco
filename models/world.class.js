@@ -106,17 +106,31 @@ class World {
     this.level.enemies.forEach((enemy) => {
       this.throwableObject.forEach((bottle) => {
         if (bottle.isColliding(enemy)) {
-          enemy.die();
-          this.removeDeadChicken(enemy);
+          if (enemy instanceof Endboss) {
+            enemy.hitEndboss();
+              this.endbossStautsBar.setPercentage(enemy.energy)
+            this.removeUsedBottle(bottle);
+            console.log(this.removeUsedBottle(bottle));
+          } else {
+            enemy.die();
+            this.removeDeadChicken(enemy);
+            this.removeUsedBottle(bottle);
+          }
         }
       });
     });
   }
 
+  removeUsedBottle(bottle) {
+    this.throwableObject = this.throwableObject.filter(
+      (currentBottle) => currentBottle !== bottle
+    );
+  }
+
   removeDeadChicken() {
     setTimeout(() => {
       this.level.enemies = this.level.enemies.filter((enemy) => !enemy.dead);
-    }, 400);
+    }, 1000);
   }
 
   draw() {
@@ -131,9 +145,9 @@ class World {
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.bottleStatusBar);
     if (this.character.x > 1300) {
-       this.addToMap(this.endbossStautsBar);
+      this.addToMap(this.endbossStautsBar);
     }
-   
+
     this.ctx.translate(this.camera_x, 0);
 
     this.addToMap(this.character);
@@ -160,7 +174,6 @@ class World {
     if (mo.otherDirection) {
       this.flipImageBack(mo);
     }
-    
   }
 
   addObjectToMap(objects) {
