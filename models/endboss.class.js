@@ -2,7 +2,7 @@ class Endboss extends MovableObject {
   height = 400;
   width = 250;
   y = 60;
-  energy = 100;
+  energy = 99;
   world;
 
   IMAGES_WALK = [

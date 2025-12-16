@@ -108,12 +108,14 @@ class World {
         if (bottle.isColliding(enemy)) {
           if (enemy instanceof Endboss) {
             enemy.hitEndboss();
-              this.endbossStautsBar.setPercentage(enemy.energy)
-            this.removeUsedBottle(bottle);
+            this.endbossStautsBar.setPercentage(enemy.energy);
+            bottle.playAnimation(bottle.BOTTLE_SPLASH);
+            
             console.log(this.removeUsedBottle(bottle));
           } else {
             enemy.die();
             this.removeDeadChicken(enemy);
+            bottle.playAnimation(bottle.BOTTLE_SPLASH);
             this.removeUsedBottle(bottle);
           }
         }
