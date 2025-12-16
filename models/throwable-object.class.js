@@ -18,6 +18,7 @@ BOTTLE_ROTATION = [
 
   constructor(x, y) {
     super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
+    this.loadImages(this.BOTTLE_ROTATION);
     this.x = x;
     this.y = y;
     this.height = 60;
@@ -30,6 +31,7 @@ BOTTLE_ROTATION = [
     this.speedY = 30;
     this.applyGravity();
     setInterval(() => {
+      this.playAnimation(this.BOTTLE_ROTATION);
       this.x += 10;
     }, 25);
   }
