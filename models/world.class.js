@@ -112,6 +112,8 @@ class World {
             bottle.playAnimation(bottle.BOTTLE_SPLASH);
             
             console.log(this.removeUsedBottle(bottle));
+            console.log( bottle.playAnimation(bottle.BOTTLE_SPLASH));
+            
           } else {
             enemy.die();
             this.removeDeadChicken(enemy);
