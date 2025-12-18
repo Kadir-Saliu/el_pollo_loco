@@ -1,5 +1,5 @@
 function initLever(){
- level1
+ 
 }
 
  let level1 = new Level(

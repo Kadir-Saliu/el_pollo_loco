@@ -8,6 +8,8 @@ function init() {}
 function startGame() {
   let startScreen = document.getElementById("startScreen");
   startScreen.classList.add("d_none");
+  let controls = document.getElementById("controls");
+  controls.classList.add("d_none");
 
   canvas = document.getElementById("canvas");
   canvas.classList.remove("d_none");
