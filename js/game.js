@@ -11,6 +11,9 @@ function startGame() {
   let controls = document.getElementById("controls");
   controls.classList.add("d_none");
 
+  let headerTitle = document.getElementById("h1");
+  headerTitle.classList.add("d_none");
+
   canvas = document.getElementById("canvas");
   canvas.classList.remove("d_none");
   world = new World(canvas, keyboard);
