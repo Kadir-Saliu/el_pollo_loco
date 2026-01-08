@@ -25,9 +25,15 @@ class World {
     this.run();
   }
 
-  setWorld() {
-    this.character.world = this;
-  }
+ setWorld() {
+  this.character.world = this;
+  this.level.enemies.forEach(enemy => {
+    if (enemy instanceof Endboss) {
+      enemy.world = this;
+      enemy.animate();
+    }
+  });
+}
 
   run() {
     setInterval(() => {
@@ -110,10 +116,8 @@ class World {
             enemy.hitEndboss();
             this.endbossStautsBar.setPercentage(enemy.energy);
             bottle.playAnimation(bottle.BOTTLE_SPLASH);
-            
-            console.log(this.removeUsedBottle(bottle));
+             this.removeUsedBottle(bottle);
             console.log( bottle.playAnimation(bottle.BOTTLE_SPLASH));
-            
           } else {
             enemy.die();
             this.removeDeadChicken(enemy);
