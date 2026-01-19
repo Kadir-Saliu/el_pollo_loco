@@ -8,7 +8,8 @@ class World {
   statusBar = new StatusBar();
   coinStatusBar = new CoinStatusBar();
   bottleStatusBar = new BottleStatusBar();
-  endbossStautsBar = new EndbossStatusBar();
+  endbossStautsBar = new EndbossStatusBar(); 
+  hadFirstContactWithEndboss = false;
 
   throwableObject = [];
   cooldown = 2000;
@@ -153,6 +154,11 @@ class World {
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.bottleStatusBar);
     if (this.character.x > 1300) {
+      this.hadFirstContactWithEndboss = true;
+      this.addToMap(this.endbossStautsBar);
+    }
+
+    if (this.hadFirstContactWithEndboss === true && this.character.x < 1300) {
       this.addToMap(this.endbossStautsBar);
     }
 

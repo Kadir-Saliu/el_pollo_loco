@@ -48,6 +48,7 @@ class Endboss extends MovableObject {
   ];
 
   hadFirstContact = false;
+  alertOver = false;
 
   constructor(world) {
     super().loadImage(this.IMAGES_ALERT[0]);
@@ -60,25 +61,26 @@ class Endboss extends MovableObject {
     this.x = 1800;
   }
   animate() {
-    let i = 0;
     setInterval(() => {
-      i++;
-      if (world.character.x > 1360 && !this.hadFirstContact) {
-        console.log(this.world.character.x);
-        i = 0;
+      if (this.world.character.x > 1360) {
         this.hadFirstContact = true;
-      }
 
-      if (this.hadFirstContact && this.energy > 0) {
-        if (i < 10) {
-          this.playAnimation(this.IMAGES_ALERT);
-        } else {
+        this.playAnimation(this.IMAGES_ALERT);
+
+        setTimeout(() => {
+          this.alertOver = true;
+        }, 3000);
+
+        this.playAnimation(this.IMAGES_ATTACK);
+
+        if (this.hadFirstContact && this.alertOver) {
           this.playAnimation(this.IMAGES_WALK);
           this.moveLeft();
         }
       }
-
     }, 500);
+
+  
 
     setInterval(() => {
       if (this.isDead()) {
