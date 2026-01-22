@@ -42,6 +42,10 @@ body {
   padding-bottom: 30px;
 }
 
+.fullscreen {
+  cursor: pointer;
+}
+
 .start-screen h2 {
   color: white;
   font-size: 24px;
