@@ -38,6 +38,7 @@ class Character extends MovableObject {
     "./img/2_character_pepe/4_hurt/H-43.png"
 
   ];
+
   jumpAudio = new Audio('audio/jump-soundeffect-37532.mp3');
   coinAudio = new Audio('audio/get-coin-351945.mp3')
   world;
@@ -88,7 +89,6 @@ class Character extends MovableObject {
         }
       }
     }, 50);
-
   };
 
  
