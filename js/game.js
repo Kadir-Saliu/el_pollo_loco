@@ -2,11 +2,15 @@ let canvas;
 let ctx;
 let world;
 let keyboard = new Keyboard();
+let gameStarted = false;
 
 function init() {}
 
 function startGame() {
-  let startScreen = document.getElementById("startScreen");
+  gameStarted = true;
+
+  if (gameStarted) {
+     let startScreen = document.getElementById("startScreen");
   startScreen.classList.add("d_none");
   let controls = document.getElementById("controls");
   controls.classList.add("d_none");
@@ -17,7 +21,17 @@ function startGame() {
   canvas = document.getElementById("canvas");
   canvas.classList.remove("d_none");
   world = new World(canvas, keyboard);
-  level1 = initLevel();
+  level1 = new Level();
+  
+  // playSpawnSound für alle Hühner aufrufen
+  world.level.enemies.forEach(enemy => {
+    if (enemy instanceof Chicken) {
+      enemy.playSpawnSound();
+    }
+  });
+  }
+ 
+  
 }
 
 function toggleFullScreen() {

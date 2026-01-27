@@ -22,14 +22,13 @@ class Chicken extends MovableObject {
     this.loadImages(this.IMAGES_DEATH);
     this.x = 400 + Math.random() * 500;
     this.speed = 0.15 + Math.random() * 0.25;
-
-    this.playSpawnSound(); // 🔊 Sound beim Erscheinen
-
     this.animate();
   }
   animate() {
     setInterval(() => {
-      this.x -= this.speed;
+      if (gameStarted) {
+        this.x -= this.speed;
+      }
     }, 1000 / 60);
 
     setInterval(() => {
@@ -47,11 +46,16 @@ class Chicken extends MovableObject {
 
   playSpawnSound() {
     setInterval(() => {
-
-      if (this.dead === true) {
-        this.chickenAudio.stop();
+      if (this.dead) {
+        this.chickenAudio.pause();
+        this.chickenAudio.currentTime = 0; // optional: zurücksetzen
+        clearInterval(this.spawnSoundInterval);
+        return;
       }
-      this.chickenAudio.play();
+
+      if (this.chickenAudio.paused) {
+        this.chickenAudio.play();
+      }
     }, 1000);
   }
 }
