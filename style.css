@@ -43,7 +43,12 @@ body {
   padding-bottom: 30px;
 }
 
-.fullscreen {
+.canvas-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.fullscreen, .canvas-fullscreen {
   position: absolute;
   right: 12px;
   bottom: 12px;
@@ -55,8 +60,7 @@ body {
   will-change: transform, box-shadow;
 }
 
-.fullscreen:hover,
-.fullscreen:focus {
+.fullscreen:hover, .fullscreen:focus, .canvas-fullscreen:hover, .canvas-fullscreen:focus {
   transform: translateY(-3px) scale(1.08);
   box-shadow: 0 8px 18px rgba(0,0,0,0.35);
   filter: brightness(1.06);
@@ -64,7 +68,7 @@ body {
 }
 
 /* keyboard focus visibility for accessibility */
-.fullscreen:focus {
+.fullscreen:focus, .canvas-fullscreen:focus {
   outline: 2px solid rgba(255,255,255,0.9);
   outline-offset: 4px;
 }

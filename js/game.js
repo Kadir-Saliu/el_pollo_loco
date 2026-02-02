@@ -20,6 +20,8 @@ function startGame() {
 
   canvas = document.getElementById("canvas");
   canvas.classList.remove("d_none");
+  const canvasFsBtn = document.getElementById('canvasFullscreenBtn');
+  if (canvasFsBtn) canvasFsBtn.classList.remove('d_none');
   world = new World(canvas, keyboard);
   level1 = new Level();
   
