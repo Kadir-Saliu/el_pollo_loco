@@ -10,40 +10,40 @@ function startGame() {
   gameStarted = true;
 
   if (gameStarted) {
-     let startScreen = document.getElementById("startScreen");
-  startScreen.classList.add("d_none");
-  let controls = document.getElementById("controls");
-  controls.classList.add("d_none");
+    let startScreen = document.getElementById("startScreen");
+    startScreen.classList.add("d_none");
+    let controls = document.getElementById("controls");
+    controls.classList.add("d_none");
 
-  let headerTitle = document.getElementById("h1");
-  headerTitle.classList.add("d_none");
+    let headerTitle = document.getElementById("h1");
+    headerTitle.classList.add("d_none");
 
-  canvas = document.getElementById("canvas");
-  canvas.classList.remove("d_none");
-  const canvasFsBtn = document.getElementById('canvasFullscreenBtn');
-  if (canvasFsBtn) canvasFsBtn.classList.remove('d_none');
-  world = new World(canvas, keyboard);
-  level1 = new Level();
-  
-  // playSpawnSound für alle Hühner aufrufen
-  world.level.enemies.forEach(enemy => {
+    canvas = document.getElementById("canvas");
+    canvas.classList.remove("d_none");
+    const canvasFsBtn = document.getElementById("canvasFullscreenBtn");
+    if (canvasFsBtn) canvasFsBtn.classList.remove("d_none");
+    world = new World(canvas, keyboard);
+    level1 = new Level();
+
+    // playSpawnSound für alle Hühner aufrufen
+    chickenAudio();
+  }
+}
+
+function chickenAudio() {
+  world.level.enemies.forEach((enemy) => {
     if (enemy instanceof Chicken) {
       enemy.playSpawnSound();
     }
   });
-  }
- 
-  
 }
 
 function toggleFullScreen() {
- 
-    if (!document.fullscreenElement) {
-      document.body.requestFullscreen();
-    } else {
-      document.exitFullscreen();
-    }
-  
+  if (!document.fullscreenElement) {
+    document.body.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
 }
 
 window.addEventListener("keydown", (event) => {
