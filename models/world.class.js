@@ -67,7 +67,7 @@ class World {
   checkCollision() {
     this.checkCollisionEnemyWithCharacter();
     this.checkCollisionCharacterWithCoin();
-    this.checkCollisionCharactkerWhithBottle();
+    this.checkCollisionCharacterWhithBottle();
     this.checkCollisionEnemyWithThrowableBottle();
   }
 
@@ -98,7 +98,7 @@ class World {
     });
   }
 
-  checkCollisionCharactkerWhithBottle() {
+  checkCollisionCharacterWhithBottle() {
     this.level.bottles = this.level.bottles.filter((bottle) => {
       if (this.character.isColliding(bottle)) {
         this.character.getBottle();
