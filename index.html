@@ -43,11 +43,13 @@
       <h2>Hilf Pepe, die Münzen zu sammeln und den Endboss zu besiegen!</h2>
       <div class="button-container">
         <button id="startBtn" class="btn btn-secondary start-btn" onclick="startGame()">Start Game</button>
+        <button class="btn btn-info" onclick="showControls()">Controls</button>
       </div>
        <img class="fullscreen" onclick="toggleFullScreen()" src="./img/fullscreen/icons8-vollbild-32.png" alt="">
     </section>
 
-    <section id="controls" class="controls">
+    <section id="controls" class="d_none">
+      <button onclick="hideControls()" class="close-btn-controls">✕</button>
       <div class="control-buttons">
         <div class="control">
           <img src="./img/controls/arrow-left.png" alt="Pfeil nach links" />

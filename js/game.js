@@ -30,6 +30,16 @@ function startGame() {
   }
 }
 
+function showControls() {
+  let controls = document.getElementById("controls");
+  controls.classList.remove("d_none");
+}
+
+function hideControls() {
+  let controls = document.getElementById("controls");
+  controls.classList.add("d_none");
+}
+
 function chickenAudio() {
   world.level.enemies.forEach((enemy) => {
     if (enemy instanceof Chicken) {
