@@ -207,96 +207,70 @@ h1 {
   display: inline-block;
 }
 
-.arrow-left,
-.arrow-right,
-.space,
-.throw {
+.canvas-arrow-left, .canvas-arrow-right,
+.canvas-arrow-up,.canvas-arrow-throw {
   position: absolute;
-  bottom: 20px;
-  width: 60px;
-  height: 60px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(0, 0, 0, 0.3);
-  color: white;
-  font-size: 36px;
-  font-weight: bold;
-  cursor: pointer;
+  background-color: rgba(0 , 0, 0, 0.3);
   border-radius: 10px;
-  user-select: none;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  transition: all 200ms ease;
-  z-index: 10;
-  padding: 0;
-  margin: 0;
+  width: 60px;
+  height: 80px;
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
+  cursor: pointer;
+  display: flex;
+  align-items: center;  
+  justify-content: center;
 }
 
-.arrow-left:hover,
-.arrow-right:hover,
-.space:hover,
-.throw:hover {
-  background-color: rgba(0, 0, 0, 0.7);
-  border-color: rgba(255, 255, 255, 0.6);
-  transform: scale(1.1);
+.canvas-arrow-left:active, .canvas-arrow-right:active,
+.canvas-arrow-up:active, .canvas-arrow-throw:active { 
+  transform: scale(0.8);
+  background-color: rgba(0 , 0, 0, 0.5);
 }
 
-.arrow-left:active,
-.arrow-right:active,
-.space:active,
-.throw:active {
-  background-color: rgba(0, 0, 0, 0.9);
-  transform: scale(0.95);
+.canvas-arrow-left {
+  left: 10px;
+  bottom : 0;
+
 }
 
-.arrow-left {
-  left: 15px;
+.canvas-arrow-right{
+   left: 100px;
+  bottom : 0;
+
 }
 
-.arrow-right {
-  left: 85px;
+.canvas-arrow-up{
+   right: 180px;
+  bottom : 0;
+
 }
 
-.space {
-  left: 205px;
+.canvas-arrow-throw{
+   right: 100px;
+  bottom : 0;
+
 }
 
-.throw {
-  left: 275px;
+
+#canvas-controls {
+  display: none;
 }
+
 
 @media only screen and (max-width: 720px) {
   canvas {
     width: 100%;
   }
 
-  .arrow-left,
-  .arrow-right,
-  .space,
-  .throw {
-    display: flex;
-    width: 50px;
-    height: 50px;
-    font-size: 28px;
-    bottom: 15px;
+  #canvasWrapper #canvas-controls.active {
+   display: flex;
   }
+  
 
-  .arrow-left {
-    left: 10px;
-  }
-
-  .arrow-right {
-    left: 70px;
-  }
-
-  .space {
-    left: 180px;
-  }
-
-  .throw {
-    left: 240px;
-  }
 }
+
 
 @media only screen and (max-height: 480px) {
   canvas {

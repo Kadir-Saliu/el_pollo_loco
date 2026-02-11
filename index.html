@@ -4,18 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El-Pollo-Loco</title>
-    <link
-      rel="icon"
-      type="image/png"
-      href="img/2_character_pepe/1_idle/idle/I-1.png"
-    />
+
+    <link rel="icon" type="image/png" href="img/2_character_pepe/1_idle/idle/I-1.png" />
     <link rel="stylesheet" href="style.css" />
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
     />
+
     <script src="./models/drawable-object.class.js"></script>
     <script src="./models/movable-object.class.js"></script>
     <script src="./models/character.class.js"></script>
@@ -36,52 +33,62 @@
     <script src="./levels/level1.js"></script>
     <script src="./js/game.js"></script>
   </head>
+
   <body onload="init()">
     <h1 id="h1">🐔 El Pollo Loco 🐔</h1>
 
     <section id="startScreen" class="start-screen d_flex">
       <h2>Hilf Pepe, die Münzen zu sammeln und den Endboss zu besiegen!</h2>
+
       <div class="button-container">
         <button id="startBtn" class="btn btn-secondary start-btn" onclick="startGame()">Start Game</button>
         <button class="btn btn-info" onclick="showControls()">Controls</button>
       </div>
-       <img class="fullscreen" onclick="toggleFullScreen()" src="./img/fullscreen/icons8-vollbild-32.png" alt="">
+
+      <img class="fullscreen" onclick="toggleFullScreen()" src="./img/fullscreen/icons8-vollbild-32.png" alt="">
     </section>
 
     <section id="controls" class="d_none">
       <button onclick="hideControls()" class="close-btn-controls">✕</button>
+
       <div class="control-buttons">
         <div class="control">
           <img src="./img/controls/arrow-left.png" alt="Pfeil nach links" />
           <span>LEFT</span>
         </div>
+
         <div class="control">
           <img src="./img/controls/arrow-right.png" alt="Pfeil nach rechts" />
           <span>RIGHT</span>
         </div>
+
         <div class="control">
-          <img src="./img/controls/space-key.png" alt="Pfeil nach oben" />
+          <img src="./img/controls/space-key.png" alt="Space" />
           <span>JUMP</span>
         </div>
+
         <div class="control">
-          <img src="./img/controls/d-button.png" alt="Buchstabe S" />
+          <img src="./img/controls/d-button.png" alt="D Taste" />
           <span>THROW</span>
         </div>
       </div>
     </section>
 
     <div id="canvasWrapper" class="canvas-wrapper">
-      <canvas id="canvas" width="720px" height="480px" class="d_none"> </canvas>
-      <img id="canvasFullscreenBtn" class="canvas-fullscreen d_none" onclick="toggleFullScreen()" src="./img/fullscreen/icons8-vollbild-32.png" alt="Fullscreen">
-      <p class="arrow-left"><</p>
-      <p class="arrow-right">></p>
-      <p class="space">^</p>
-      <p class="throw">&#9889</p>
+      <canvas id="canvas" width="720" height="480" class="d_none"></canvas>
+
+      <img id="canvasFullscreenBtn" class="canvas-fullscreen d_none"
+           onclick="toggleFullScreen()" src="./img/fullscreen/icons8-vollbild-32.png" alt="Fullscreen">
+
+      <div id="canvas-controls" class="d_none">
+        <p class="canvas-arrow-left"><</p>
+        <p class="canvas-arrow-right">></p>
+        <p class="canvas-arrow-up">^</p>
+        <p class="canvas-arrow-throw">&#9889;</p>
+      </div>
     </div>
 
     <section id="winScreen" class="win-screen d_none"></section>
-    <section id="endScreen" class=" end-screen d_none"></section>
-
-
+    <section id="endScreen" class="end-screen d_none"></section>
   </body>
 </html>

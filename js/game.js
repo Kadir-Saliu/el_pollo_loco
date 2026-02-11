@@ -18,14 +18,21 @@ function startGame() {
     let headerTitle = document.getElementById("h1");
     headerTitle.classList.add("d_none");
 
+    let canvasWrapper = document.getElementById("canvasWrapper");
+    canvasWrapper.classList.remove("d_none");
+
     canvas = document.getElementById("canvas");
     canvas.classList.remove("d_none");
     const canvasFsBtn = document.getElementById("canvasFullscreenBtn");
+    document.getElementById("canvas-controls").classList.add("active");
+
     if (canvasFsBtn) canvasFsBtn.classList.remove("d_none");
+
+    showMobileControls();
+
     world = new World(canvas, keyboard);
     level1 = new Level();
 
-    // playSpawnSound für alle Hühner aufrufen
     chickenAudio();
   }
 }
@@ -38,6 +45,10 @@ function showControls() {
 function hideControls() {
   let controls = document.getElementById("controls");
   controls.classList.add("d_none");
+}
+
+function showMobileControls() {
+  document.getElementById("canvas-controls").classList.remove("d_none");
 }
 
 function chickenAudio() {
