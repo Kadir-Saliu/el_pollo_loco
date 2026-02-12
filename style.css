@@ -221,6 +221,8 @@ h1 {
   display: flex;
   align-items: center;  
   justify-content: center;
+  transition: all 150ms ease;
+  user-select: none;
 }
 
 .canvas-arrow-left:active, .canvas-arrow-right:active,
@@ -262,15 +264,130 @@ h1 {
 @media only screen and (max-width: 720px) {
   canvas {
     width: 100%;
+    max-width: 720px;
+    height: auto;
   }
 
   #canvasWrapper #canvas-controls.active {
-   display: flex;
+    display: block;
   }
-  
 
+  .canvas-arrow-left, .canvas-arrow-right,
+  .canvas-arrow-up, .canvas-arrow-throw {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    border-radius: 8px;
+  }
+
+  .canvas-arrow-left {
+    left: 8px;
+    bottom: 8px;
+  }
+
+  .canvas-arrow-right {
+    left: 65px;
+    bottom: 8px;
+  }
+
+  .canvas-arrow-up {
+    right: 65px;
+    bottom: 8px;
+  }
+
+  .canvas-arrow-throw {
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .fullscreen, .canvas-fullscreen {
+    display: none;
+  }
 }
 
+@media only screen and (max-width: 480px) {
+  canvas {
+    width: 100%;
+    height: auto;
+  }
+
+  .canvas-arrow-left, .canvas-arrow-right,
+  .canvas-arrow-up, .canvas-arrow-throw {
+    width: 45px;
+    height: 45px;
+    font-size: 16px;
+    border-radius: 6px;
+  }
+
+  .canvas-arrow-left {
+    left: 6px;
+    bottom: 6px;
+  }
+
+  .canvas-arrow-right {
+    left: 56px;
+    bottom: 6px;
+  }
+
+  .canvas-arrow-up {
+    right: 56px;
+    bottom: 6px;
+  }
+
+  .canvas-arrow-throw {
+    right: 6px;
+    bottom: 6px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  .start-screen, .win-screen, .end-screen {
+    width: 100%;
+    height: 100vh;
+    max-width: 720px;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  canvas {
+    width: 100%;
+    height: auto;
+  }
+
+  .canvas-arrow-left, .canvas-arrow-right,
+  .canvas-arrow-up, .canvas-arrow-throw {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+    border-radius: 5px;
+  }
+
+  .canvas-arrow-left {
+    left: 4px;
+    bottom: 4px;
+  }
+
+  .canvas-arrow-right {
+    left: 48px;
+    bottom: 4px;
+  }
+
+  .canvas-arrow-up {
+    right: 48px;
+    bottom: 4px;
+  }
+
+  .canvas-arrow-throw {
+    right: 4px;
+    bottom: 4px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+}
 
 @media only screen and (max-height: 480px) {
   canvas {
