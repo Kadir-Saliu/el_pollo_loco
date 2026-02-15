@@ -9,11 +9,14 @@ body {
   background-image: url("./img/assets/desert-5385998_640.png");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
+  width: 100%;
 }
 
 .d_flex {
@@ -23,18 +26,17 @@ body {
   justify-content: center;
 }
 
-.d_none{
+.d_none {
   display: none;
 }
 
-.dblock{
+.dblock {
   display: block;
 }
 
 .start-screen {
   position: relative;
   background-image: url("./img/9_intro_outro_screens/start/startscreen_1.png");
-  background-size: contain;
   background-repeat: round;
   justify-content: space-between;
   width: 720px;
@@ -48,7 +50,8 @@ body {
   display: inline-block;
 }
 
-.fullscreen, .canvas-fullscreen {
+.fullscreen,
+.canvas-fullscreen {
   position: absolute;
   right: 12px;
   bottom: 12px;
@@ -56,20 +59,28 @@ body {
   z-index: 20;
   width: 32px;
   height: 32px;
-  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease, opacity 150ms ease;
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease,
+    filter 150ms ease,
+    opacity 150ms ease;
   will-change: transform, box-shadow;
 }
 
-.fullscreen:hover, .fullscreen:focus, .canvas-fullscreen:hover, .canvas-fullscreen:focus {
+.fullscreen:hover,
+.fullscreen:focus,
+.canvas-fullscreen:hover,
+.canvas-fullscreen:focus {
   transform: translateY(-3px) scale(1.08);
-  box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
   filter: brightness(1.06);
   opacity: 1;
 }
 
 /* keyboard focus visibility for accessibility */
-.fullscreen:focus, .canvas-fullscreen:focus {
-  outline: 2px solid rgba(255,255,255,0.9);
+.fullscreen:focus,
+.canvas-fullscreen:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
   outline-offset: 4px;
 }
 
@@ -120,7 +131,6 @@ body {
 #controls.d_none {
   display: none;
 }
-
 
 canvas {
   background-color: black;
@@ -207,10 +217,12 @@ h1 {
   display: inline-block;
 }
 
-.canvas-arrow-left, .canvas-arrow-right,
-.canvas-arrow-up,.canvas-arrow-throw {
+.canvas-arrow-left,
+.canvas-arrow-right,
+.canvas-arrow-up,
+.canvas-arrow-throw {
   position: absolute;
-  background-color: rgba(0 , 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   width: 60px;
   height: 80px;
@@ -219,47 +231,43 @@ h1 {
   color: black;
   cursor: pointer;
   display: flex;
-  align-items: center;  
+  align-items: center;
   justify-content: center;
   transition: all 150ms ease;
   user-select: none;
 }
 
-.canvas-arrow-left:active, .canvas-arrow-right:active,
-.canvas-arrow-up:active, .canvas-arrow-throw:active { 
+.canvas-arrow-left:active,
+.canvas-arrow-right:active,
+.canvas-arrow-up:active,
+.canvas-arrow-throw:active {
   transform: scale(0.8);
-  background-color: rgba(0 , 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .canvas-arrow-left {
   left: 10px;
-  bottom : 0;
-
+  bottom: 0;
 }
 
-.canvas-arrow-right{
-   left: 100px;
-  bottom : 0;
-
+.canvas-arrow-right {
+  left: 100px;
+  bottom: 0;
 }
 
-.canvas-arrow-up{
-   right: 180px;
-  bottom : 0;
-
+.canvas-arrow-up {
+  right: 180px;
+  bottom: 0;
 }
 
-.canvas-arrow-throw{
-   right: 100px;
-  bottom : 0;
-
+.canvas-arrow-throw {
+  right: 100px;
+  bottom: 0;
 }
-
 
 #canvas-controls {
   display: none;
 }
-
 
 @media only screen and (max-width: 720px) {
   canvas {
@@ -272,8 +280,10 @@ h1 {
     display: block;
   }
 
-  .canvas-arrow-left, .canvas-arrow-right,
-  .canvas-arrow-up, .canvas-arrow-throw {
+  .canvas-arrow-left,
+  .canvas-arrow-right,
+  .canvas-arrow-up,
+  .canvas-arrow-throw {
     width: 50px;
     height: 50px;
     font-size: 18px;
@@ -300,7 +310,8 @@ h1 {
     bottom: 8px;
   }
 
-  .fullscreen, .canvas-fullscreen {
+  .fullscreen,
+  .canvas-fullscreen {
     display: none;
   }
 }
@@ -311,8 +322,10 @@ h1 {
     height: auto;
   }
 
-  .canvas-arrow-left, .canvas-arrow-right,
-  .canvas-arrow-up, .canvas-arrow-throw {
+  .canvas-arrow-left,
+  .canvas-arrow-right,
+  .canvas-arrow-up,
+  .canvas-arrow-throw {
     width: 45px;
     height: 45px;
     font-size: 16px;
@@ -343,7 +356,9 @@ h1 {
     font-size: 32px;
   }
 
-  .start-screen, .win-screen, .end-screen {
+  .start-screen,
+  .win-screen,
+  .end-screen {
     width: 100%;
     height: 100vh;
     max-width: 720px;
@@ -356,8 +371,10 @@ h1 {
     height: auto;
   }
 
-  .canvas-arrow-left, .canvas-arrow-right,
-  .canvas-arrow-up, .canvas-arrow-throw {
+  .canvas-arrow-left,
+  .canvas-arrow-right,
+  .canvas-arrow-up,
+  .canvas-arrow-throw {
     width: 40px;
     height: 40px;
     font-size: 14px;
