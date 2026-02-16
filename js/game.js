@@ -9,6 +9,8 @@ function init() {}
 function startGame() {
   gameStarted = true;
 
+    checkOrientationBeforeStart();
+
   if (gameStarted) {
     let startScreen = document.getElementById("startScreen");
     startScreen.classList.add("d_none");
@@ -38,6 +40,22 @@ function startGame() {
     chickenAudio();
   }
 }
+
+function checkOrientationBeforeStart() {
+  const warning = document.getElementById("rotate");
+
+  if (window.innerHeight > window.innerWidth) {
+    warning.classList.remove("d_none");
+
+    // Spiel pausieren, bis gedreht wird
+    if (world) world.stopGame = true;
+  } else {
+    warning.classList.add("d_none");
+
+    if (world) world.stopGame = false;
+  }
+}
+
 
 function showControls() {
   let controls = document.getElementById("controls");
@@ -144,3 +162,6 @@ function initMobileControls(world) {
   throwBtn.addEventListener('pointerdown', () => keyboard.D = true);
   throwBtn.addEventListener('pointerup', () => keyboard.D = false);
 }
+
+window.addEventListener("resize", checkOrientationBeforeStart);
+window.addEventListener("orientationchange", checkOrientationBeforeStart);
