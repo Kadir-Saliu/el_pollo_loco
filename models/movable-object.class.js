@@ -103,11 +103,13 @@ class MovableObject extends DrawableObject {
 
   stopGame() {
     canvas.classList.add("d_none");
+    document.getElementById("canvas-controls").classList.remove("active");
     endScreen.classList.remove("d_none");
   }
 
   winGame() {
     canvas.classList.add("d_none");
+    document.getElementById("canvas-controls").classList.remove("active");
     winScreen.classList.remove("d_none");
   }
 }
