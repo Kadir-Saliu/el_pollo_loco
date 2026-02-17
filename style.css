@@ -430,15 +430,13 @@ h1 {
     bottom: 6px;
   }
 
-  h1 {
-    font-size: 32px;
-  }
+  
 
   .start-screen,
   .win-screen,
   .end-screen {
     width: 100%;
-    height: 420px;
+    height: 100vh;
   }
 }
 
