@@ -293,16 +293,21 @@ h1 {
   z-index: 999;
 }
 
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 928px) {
   canvas {
     width: 100%;
     max-width: 720px;
     height: auto;
   }
 
+  h1{
+    display: none;
+  }
+
   .start-screen{
     width: 100%;
-    max-width: 720px;
+    
+    height: 100vh;
   }
 
   
