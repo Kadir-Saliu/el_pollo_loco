@@ -9,7 +9,7 @@ function init() {}
 function startGame() {
   gameStarted = true;
 
-    checkOrientationBeforeStart();
+  checkOrientationBeforeStart();
 
   if (gameStarted) {
     let startScreen = document.getElementById("startScreen");
@@ -35,7 +35,7 @@ function startGame() {
     world = new World(canvas, keyboard);
     level1 = new Level();
 
-    initMobileControls(world)
+    initMobileControls(world);
 
     chickenAudio();
   }
@@ -54,8 +54,10 @@ function checkOrientationBeforeStart() {
 
     if (world) world.stopGame = false;
   }
-}
 
+  window.addEventListener("resize", checkOrientationBeforeStart);
+  window.addEventListener("orientationchange", checkOrientationBeforeStart);
+}
 
 function showControls() {
   let controls = document.getElementById("controls");
@@ -139,29 +141,22 @@ window.addEventListener("keyup", (event) => {
 });
 
 function initMobileControls(world) {
-  const leftBtn = document.querySelector('.canvas-arrow-left');
-  const rightBtn = document.querySelector('.canvas-arrow-right');
-  const jumpBtn = document.querySelector('.canvas-arrow-up');
-  const throwBtn = document.querySelector('.canvas-arrow-throw');
+  const leftBtn = document.querySelector(".canvas-arrow-left");
+  const rightBtn = document.querySelector(".canvas-arrow-right");
+  const jumpBtn = document.querySelector(".canvas-arrow-up");
+  const throwBtn = document.querySelector(".canvas-arrow-throw");
 
-  // LINKS
-  leftBtn.addEventListener('pointerdown', () => keyboard.LEFT = true);
-  leftBtn.addEventListener('pointerup', () => keyboard.LEFT = false);
-  leftBtn.addEventListener('pointerleave', () => keyboard.LEFT = false);
+  leftBtn.addEventListener("pointerdown", () => (keyboard.LEFT = true));
+  leftBtn.addEventListener("pointerup", () => (keyboard.LEFT = false));
+  leftBtn.addEventListener("pointerleave", () => (keyboard.LEFT = false));
 
-  // RECHTS
-  rightBtn.addEventListener('pointerdown', () => keyboard.RIGHT = true);
-  rightBtn.addEventListener('pointerup', () => keyboard.RIGHT = false);
-  rightBtn.addEventListener('pointerleave', () => keyboard.RIGHT = false);
+  rightBtn.addEventListener("pointerdown", () => (keyboard.RIGHT = true));
+  rightBtn.addEventListener("pointerup", () => (keyboard.RIGHT = false));
+  rightBtn.addEventListener("pointerleave", () => (keyboard.RIGHT = false));
 
-  // SPRINGEN (einmalige Aktion)
-  jumpBtn.addEventListener('pointerdown', () => keyboard.SPACE = true);
-  jumpBtn.addEventListener('pointerup', () => keyboard.SPACE = false);
+  jumpBtn.addEventListener("pointerdown", () => (keyboard.SPACE = true));
+  jumpBtn.addEventListener("pointerup", () => (keyboard.SPACE = false));
 
-  // WERFEN (einmalige Aktion)
-  throwBtn.addEventListener('pointerdown', () => keyboard.D = true);
-  throwBtn.addEventListener('pointerup', () => keyboard.D = false);
+  throwBtn.addEventListener("pointerdown", () => (keyboard.D = true));
+  throwBtn.addEventListener("pointerup", () => (keyboard.D = false));
 }
-
-window.addEventListener("resize", checkOrientationBeforeStart);
-window.addEventListener("orientationchange", checkOrientationBeforeStart);
