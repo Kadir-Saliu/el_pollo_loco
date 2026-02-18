@@ -14,6 +14,7 @@ function startGame() {
   if (gameStarted) {
     let startScreen = document.getElementById("startScreen");
     startScreen.classList.add("d_none");
+    
     let controls = document.getElementById("controls");
     controls.classList.add("d_none");
 
