@@ -4,7 +4,17 @@ let world;
 let keyboard = new Keyboard();
 let gameStarted = false;
 
-function init() {}
+function init() {
+  try {
+    const auto = localStorage.getItem('el_pollo_autoStart');
+    if (auto === '1') {
+      localStorage.removeItem('el_pollo_autoStart');
+      startGame();
+    }
+  } catch (e) {
+    // if localStorage not available, do nothing
+  }
+}
 
 function startGame() {
   gameStarted = true;
@@ -88,6 +98,21 @@ function toggleFullScreen() {
   } else {
     document.exitFullscreen();
   }
+}
+
+function restartGame() {
+  try {
+    localStorage.setItem('el_pollo_autoStart', '1');
+  } catch (e) {
+  }
+  location.reload();
+}
+
+function backToMainMenu() {
+  try {
+    localStorage.removeItem('el_pollo_autoStart');
+  } catch (e) {}
+  location.reload();
 }
 
 window.addEventListener("keydown", (event) => {

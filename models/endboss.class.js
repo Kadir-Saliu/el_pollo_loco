@@ -91,6 +91,27 @@ class Endboss extends MovableObject {
     }, 50);
   }
 
+  hitEndboss() {
+    this.energy -= 33;
+    if (this.energy <= 0) {
+      this.energy = 0;
+      this.dead = true;
+      // trigger win screen then allow death animation to play, then remove endboss from level
+      try {
+        this.winGame();
+      } catch (e) {}
+      setTimeout(() => {
+        if (this.world && this.world.level && this.world.level.enemies) {
+          this.world.level.enemies = this.world.level.enemies.filter(
+            (e) => e !== this
+          );
+        }
+      }, 1000);
+    } else {
+      this.lastHit = new Date().getTime();
+    }
+  }
+
   moveLeft() {
     this.x -= this.speed;
   }

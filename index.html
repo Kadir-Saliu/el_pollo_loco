@@ -1,11 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html translate="no" lang="DE">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El-Pollo-Loco</title>
 
-    <link rel="icon" type="image/png" href="img/2_character_pepe/1_idle/idle/I-1.png" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="img/2_character_pepe/1_idle/idle/I-1.png"
+    />
     <link rel="stylesheet" href="style.css" />
 
     <link
@@ -41,11 +45,22 @@
       <h2>Hilf Pepe, die Münzen zu sammeln und den Endboss zu besiegen!</h2>
 
       <div class="button-container">
-        <button id="startBtn" class="btn btn-secondary start-btn" onclick="startGame()">Start Game</button>
+        <button
+          id="startBtn"
+          class="btn btn-secondary start-btn"
+          onclick="startGame()"
+        >
+          Start Game
+        </button>
         <button class="btn btn-info" onclick="showControls()">Controls</button>
       </div>
 
-      <img class="fullscreen" onclick="toggleFullScreen()" src="./img/fullscreen/icons8-vollbild-32.png" alt="">
+      <img
+        class="fullscreen"
+        onclick="toggleFullScreen()"
+        src="./img/fullscreen/icons8-vollbild-32.png"
+        alt=""
+      />
     </section>
 
     <section id="controls" class="d_none">
@@ -77,20 +92,44 @@
     <div id="canvasWrapper" class="canvas-wrapper d_none">
       <canvas id="canvas" width="720" height="480" class="d_none"></canvas>
 
-      <img id="canvasFullscreenBtn" class="canvas-fullscreen d_none"
-           onclick="toggleFullScreen()" src="./img/fullscreen/icons8-vollbild-32.png" alt="Fullscreen">
+      <img
+        id="canvasFullscreenBtn"
+        class="canvas-fullscreen d_none"
+        onclick="toggleFullScreen()"
+        src="./img/fullscreen/icons8-vollbild-32.png"
+        alt="Fullscreen"
+      />
 
       <div id="canvas-controls" class="d_none">
-        <button id="canvas-arrow-left"  class="canvas-arrow-left d_none"><</button>
+        <button id="canvas-arrow-left" class="canvas-arrow-left d_none">
+          <
+        </button>
         <button id="canvas-arrow-right" class="canvas-arrow-right">></button>
         <button id="canvas-arrow-up" class="canvas-arrow-up">^</button>
-        <button id="canvas-arrow-throw" class="canvas-arrow-throw">&#9889;</button>
+        <button id="canvas-arrow-throw" class="canvas-arrow-throw">
+          &#9889;
+        </button>
       </div>
-      
     </div>
 
-    <section id="winScreen" class="win-screen d_none"><img id="win-img" class="d_none" src="./img/You won, you lost/You Win A.png" alt=""></section>
-    <section id="endScreen" class="end-screen d_none"></section>
-    <section id="rotate" class="d_none"><img src="./img/rotate/rotate.png" alt=""></section>
+    <section id="winScreen" class="win-screen d_none">
+      <div>
+      <button class="btn btn-info" onclick="restartGame()">Restart Game</button>
+      <button class="btn btn-info" onclick="backToMainMenu()">Main Menu</button>
+        </div>
+    </section>
+    <section id="endScreen" class="end-screen d_none">
+      <div class="restart-">
+        <button class="btn btn-info" onclick="restartGame()">
+          Restart Game
+        </button>
+        <button class="btn btn-info" onclick="backToMainMenu()">
+          Main Menu
+        </button>
+      </div>
+    </section>
+    <section id="rotate" class="d_none">
+      <img src="./img/rotate/rotate.png" alt="" />
+    </section>
   </body>
 </html>

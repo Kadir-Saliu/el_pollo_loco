@@ -106,6 +106,7 @@ class MovableObject extends DrawableObject {
     canvas.classList.add("d_none");
     document.getElementById("canvas-controls").classList.remove("active");
     endScreen.classList.remove("d_none");
+   endScreen.classList.add("d_flex");
   }
 
   winGame() {
@@ -113,6 +114,6 @@ class MovableObject extends DrawableObject {
     canvas.classList.add("d_none");
     document.getElementById("canvas-controls").classList.remove("active");
     winScreen.classList.remove("d_none");
-    document.getElementById('win-img').classList.remove('d_none');
+    winScreen.classList.add("d_flex");
   }
 }
