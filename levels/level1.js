@@ -1,4 +1,5 @@
- let level1 = new Level(
+ function createLevel1() {
+     return  new Level(
   [new Chicken(), new Chicken(),new Chicken(),new Chicken(),new Endboss()],
   [new Coin(), new Coin(), new Coin(), new Coin(), new Coin()],
   [new Bottle(),new Bottle(),new Bottle(),new Bottle(),new Bottle()],
@@ -29,3 +30,6 @@
     new BackgroundObject("img/5_background/layers/1_first_layer/2.png",720 * 3),
   ]
 );
+ }
+
+ 

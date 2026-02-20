@@ -2,11 +2,37 @@ let canvas;
 let ctx;
 let world;
 let keyboard = new Keyboard();
-let gameStarted = false;
+let level1;
+
+
+
 
 function init() {
-
+  try {
+    const auto = localStorage.getItem('el_pollo_autoStart');
+    if (auto === '1') {
+      localStorage.removeItem('el_pollo_autoStart');
+      startGame();
+    }
+  } catch (e) {
+    // if localStorage not available, do nothing
+  }
 }
+
+function toggleMute() {
+  muted = !muted;
+
+  let btn = document.getElementById("unmuteButton");
+
+  if (muted) {
+    btn.innerHTML = '<img src="./img/assets/mute.png" alt="Mute">';
+    allSounds.forEach(audio => audio.muted = true);
+  } else {
+    btn.innerHTML = '<img src="./img/assets/unmute.png" alt="Unmute">';
+    allSounds.forEach(audio => audio.muted = false);
+  }
+}
+
 
 function startGame() {
   gameStarted = true;
@@ -34,9 +60,9 @@ function startGame() {
     if (canvasFsBtn) canvasFsBtn.classList.remove("d_none");
 
     showMobileControls();
-
-    world = new World(canvas, keyboard);
-    level1 = new Level();
+    level1 = createLevel1();
+    world = new World(canvas, keyboard,level1);
+    
 
     initMobileControls(world);
 

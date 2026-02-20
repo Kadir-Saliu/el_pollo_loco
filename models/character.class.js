@@ -51,6 +51,7 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_HURT);
     this.applyGravity();
     this.animate();
+    allSounds.push(this.jumpAudio, this.coinAudio);
   }
   animate() {
     setInterval(() => {
