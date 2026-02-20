@@ -5,15 +5,7 @@ let keyboard = new Keyboard();
 let gameStarted = false;
 
 function init() {
-  try {
-    const auto = localStorage.getItem('el_pollo_autoStart');
-    if (auto === '1') {
-      localStorage.removeItem('el_pollo_autoStart');
-      startGame();
-    }
-  } catch (e) {
-    // if localStorage not available, do nothing
-  }
+
 }
 
 function startGame() {
