@@ -108,6 +108,7 @@ class MovableObject extends DrawableObject {
   }
 
   winGame() {
+    document.getElementById('canvasWrapper').classList.add('d_none');
     canvas.classList.add("d_none");
     document.getElementById("canvas-controls").classList.remove("active");
     winScreen.classList.remove("d_none");
