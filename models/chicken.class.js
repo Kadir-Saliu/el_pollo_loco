@@ -25,38 +25,56 @@ class Chicken extends MovableObject {
     this.animate();
     allSounds.push(this.chickenAudio);
   }
+
   animate() {
+    setInterval(() => this.moveChicken(), 1000 / 60);
     setInterval(() => {
-      if (gameStarted) {
-        this.x -= this.speed;
-      }
-    }, 1000 / 60);
-
-    setInterval(() => {
-      this.playAnimation(this.IMAGES_WALKING);
-    }, 100);
-  }
-
-  die() {
-    setInterval(() => {
+    if (this.dead) {
       this.playAnimation(this.IMAGES_DEATH);
-    }, 1);
-    this.speed = 0;
-    this.dead = true;
+      return;
+    }
+    this.playAnimation(this.IMAGES_WALKING);
+  }, 100);
+
   }
+
+  moveChicken() {
+    if (!this.dead) {
+      this.x -= this.speed;
+    }
+  }
+
+ die() {
+  this.dead = true;
+  this.speed = 0;
+
+  this.playAnimation(this.IMAGES_DEATH);
+
+  setTimeout(() => {
+    this.y += 20; // optional: leicht nach unten kippen
+  }, 100);
+
+  setTimeout(() => {
+    this.markForRemoval = true; // world.js entfernt es dann
+  }, 500);
+}
+
 
   playSpawnSound() {
-    setInterval(() => {
+    this.spawnSoundInterval = setInterval(() => {
       if (this.dead) {
-        this.chickenAudio.pause();
-        this.chickenAudio.currentTime = 0; // optional: zurücksetzen
-        clearInterval(this.spawnSoundInterval);
+        this.stopChickenSound();
         return;
       }
-
       if (this.chickenAudio.paused) {
         this.chickenAudio.play();
       }
     }, 1000);
+  }
+
+  stopChickenSound() {
+    this.chickenAudio.pause();
+    this.chickenAudio.currentTime = 0;
+    clearInterval(this.spawnSoundInterval);
   }
 }

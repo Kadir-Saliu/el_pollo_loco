@@ -65,7 +65,7 @@ class MovableObject extends DrawableObject {
     let timepassed = new Date().getTime() - this.lastHit;
     timepassed = timepassed / 1000;
     return timepassed < 1;
-  }
+  };
 
   isDead() {
     return this.energy == 0;
@@ -101,19 +101,19 @@ class MovableObject extends DrawableObject {
     this.world.character.jumpAudio.play();
   }
 
-  stopGame() {
-    document.getElementById('canvasWrapper').classList.add('d_none');
-    canvas.classList.add("d_none");
-    document.getElementById("canvas-controls").classList.remove("active");
-    endScreen.classList.remove("d_none");
-   endScreen.classList.add("d_flex");
-  }
-
-  winGame() {
-    document.getElementById('canvasWrapper').classList.add('d_none');
-    canvas.classList.add("d_none");
-    document.getElementById("canvas-controls").classList.remove("active");
-    winScreen.classList.remove("d_none");
-    winScreen.classList.add("d_flex");
-  }
+stopGame() {
+  this.showEndScreen(endScreen);
 }
+
+winGame() {
+  this.showEndScreen(winScreen);
+}
+
+  showEndScreen(screen) {
+  document.getElementById('canvasWrapper').classList.add('d_none');
+  canvas.classList.add("d_none");
+  document.getElementById("canvas-controls").classList.remove("active");
+  screen.classList.remove("d_none");
+  screen.classList.add("d_flex");
+}
+};

@@ -62,33 +62,29 @@ class Endboss extends MovableObject {
   }
   animate() {
     setInterval(() => {
-      if (this.world.character.x > 1360) {
+      if (this.isDead()) return this.playAnimation(this.IMAGES_DEAD);
+      if (this.isHurt()) return this.playAnimation(this.IMAGES_HURT);
+
+      if (!this.hadFirstContact) {
+        if (this.world.character.x <= 1360) return;
         this.hadFirstContact = true;
-
-        this.playAnimation(this.IMAGES_ALERT);
-
-        setTimeout(() => {
-          this.alertOver = true;
-        }, 3000);
-
-        this.playAnimation(this.IMAGES_ATTACK);
-
-        if (this.hadFirstContact && this.alertOver) {
-          this.playAnimation(this.IMAGES_WALK);
-          this.moveLeft();
-        }
+        this.alertStartTime = Date.now();
       }
-    }, 500);
 
-  
+      if (Date.now() - this.alertStartTime < 3000)
+        return this.playAnimation(this.IMAGES_ALERT);
 
-    setInterval(() => {
-      if (this.isDead()) {
-        this.playAnimation(this.IMAGES_DEAD);
-      } else if (this.isHurt()) {
-        this.playAnimation(this.IMAGES_HURT);
+      if (!this.alertOver) {
+        this.alertOver = true;
+        this.attackStartTime = Date.now();
       }
-    }, 50);
+
+      if (Date.now() - this.attackStartTime < 1000)
+        return this.playAnimation(this.IMAGES_ATTACK);
+
+      this.playAnimation(this.IMAGES_WALK);
+      this.moveLeft();
+    }, 300);
   }
 
   hitEndboss() {
@@ -96,20 +92,15 @@ class Endboss extends MovableObject {
     if (this.energy <= 0) {
       this.energy = 0;
       this.dead = true;
-      // trigger win screen then allow death animation to play, then remove endboss from level
-      try {
-        this.winGame();
-      } catch (e) {}
+      setTimeout(() => this.winGame(), 1500);
       setTimeout(() => {
-        if (this.world && this.world.level && this.world.level.enemies) {
-          this.world.level.enemies = this.world.level.enemies.filter(
-            (e) => e !== this
-          );
-        }
-      }, 1000);
-    } else {
-      this.lastHit = new Date().getTime();
+        this.world.level.enemies = this.world.level.enemies.filter(
+          (e) => e !== this,
+        );
+      }, 1500);
+      return;
     }
+    this.lastHit = Date.now();
   }
 
   moveLeft() {
