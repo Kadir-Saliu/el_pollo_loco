@@ -26,6 +26,9 @@ class World {
     this.run();
   }
 
+  /**
+   * Links the world to the character and initializes endboss behavior.
+   */
   setWorld() {
     this.character.world = this;
     this.level.enemies.forEach((enemy) => {
@@ -36,6 +39,9 @@ class World {
     });
   }
 
+  /**
+   * Starts the main game loop for collision checks and throw logic.
+   */
   run() {
     setInterval(() => {
       this.checkCollision();
@@ -43,11 +49,17 @@ class World {
     }, 1000 / 60);
   }
 
+  /**
+   * Checks whether the player can throw a bottle and triggers the action.
+   */
   checkThrowObjects() {
     if (!this.keyboard.D || this.character.bottle <= 0) return;
     if (Date.now() - this.lastBottleThrow > this.cooldown) this.throwBottle();
   }
 
+  /**
+   * Creates and launches a throwable bottle and updates the bottle status bar.
+   */
   throwBottle() {
     this.lastBottleThrow = new Date().getTime();
     const bottle = new ThrowableObject(
@@ -60,6 +72,9 @@ class World {
     this.checkCollision();
   }
 
+  /**
+   * Runs all collision checks for enemies, coins, bottles and thrown bottles.
+   */
   checkCollision() {
     this.checkCollisionEnemyWithCharacter();
     this.checkCollisionCharacterWithCoin();
@@ -67,6 +82,9 @@ class World {
     this.checkCollisionEnemyWithThrowableBottle();
   }
 
+  /**
+   * Handles collisions between the character and enemies.
+   */
   checkCollisionEnemyWithCharacter() {
     this.level.enemies.forEach((enemy) => {
       if (!enemy.dead && this.character.isColliding(enemy)) {
@@ -82,6 +100,9 @@ class World {
     });
   }
 
+  /**
+   * Handles coin pickups and updates the coin status bar.
+   */
   checkCollisionCharacterWithCoin() {
     this.level.coin = this.level.coin.filter((coin) => {
       if (this.character.isColliding(coin)) {
@@ -94,6 +115,9 @@ class World {
     });
   }
 
+  /**
+   * Handles bottle pickups and updates the bottle status bar.
+   */
   checkCollisionCharacterWithBottle() {
     this.level.bottles = this.level.bottles.filter((bottle) => {
       if (this.character.isColliding(bottle)) {
@@ -105,6 +129,9 @@ class World {
     });
   }
 
+  /**
+   * Handles collisions between thrown bottles and enemies.
+   */
   checkCollisionEnemyWithThrowableBottle() {
     this.level.enemies.forEach((enemy) => {
       this.throwableObject.forEach((bottle) => {
@@ -124,18 +151,27 @@ class World {
     });
   }
 
+  /**
+   * Removes a used bottle from the throwable objects list.
+   */
   removeUsedBottle(bottle) {
     this.throwableObject = this.throwableObject.filter(
       (currentBottle) => currentBottle !== bottle,
     );
   }
 
+  /**
+   * Removes dead chickens from the enemy list after a short delay.
+   */
   removeDeadChicken() {
     setTimeout(() => {
       this.level.enemies = this.level.enemies.filter((enemy) => !enemy.dead);
     }, 1000);
   }
 
+  /**
+   * Clears the canvas and draws all world elements.
+   */
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -147,23 +183,35 @@ class World {
     requestAnimationFrame(() => this.draw());
   }
 
+  /**
+   * Draws background objects with camera offset.
+   */
   drawBackground() {
     this.ctx.translate(this.camera_x, 0);
     this.addObjectToMap(this.level.backgroundObjects);
     this.ctx.translate(-this.camera_x, 0);
   }
 
+  /**
+   * Draws HUD elements such as health, coins, and bottles.
+   */
   drawHUD() {
     this.addToMap(this.statusBar);
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.bottleStatusBar);
   }
 
+  /**
+   * Draws the endboss status bar once the player reaches the boss area.
+   */
   drawEndbossStatus() {
     if (this.character.x > 1300) this.hadFirstContactWithEndboss = true;
     if (this.hadFirstContactWithEndboss) this.addToMap(this.endbossStautsBar);
   }
 
+  /**
+   * Draws all game objects with camera offset.
+   */
   drawGameObjects() {
     this.ctx.translate(this.camera_x, 0);
 
@@ -179,6 +227,9 @@ class World {
     this.ctx.translate(-this.camera_x, 0);
   }
 
+  /**
+   * Draws a single object, flipping it if necessary.
+   */
   addToMap(mo) {
     if (mo.otherDirection) {
       this.flipImage(mo);
@@ -190,12 +241,16 @@ class World {
     }
   }
 
+  /**
+   * Draws an array of objects.
+   */
   addObjectToMap(objects) {
-    objects.forEach((o) => {
-      this.addToMap(o);
-    });
+    objects.forEach((o) => this.addToMap(o));
   }
 
+  /**
+   * Flips an object horizontally for mirrored rendering.
+   */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
@@ -203,6 +258,9 @@ class World {
     mo.x = mo.x * -1;
   }
 
+  /**
+   * Restores the original orientation after flipping.
+   */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();

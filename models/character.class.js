@@ -52,11 +52,23 @@ class Character extends MovableObject {
     this.animate();
     allSounds.push(this.jumpAudio, this.coinAudio);
   }
+  /**
+   * Starts movement and animation loops for the character.
+   * Movement runs at 60 FPS, animation at 20 FPS.
+   */
   animate() {
-    setInterval(() => {this.handleMovement();}, 1000 / 60);
-    setInterval(() => {this.handleAnimation();}, 50);
+    setInterval(() => {
+      this.handleMovement();
+    }, 1000 / 60);
+    setInterval(() => {
+      this.handleAnimation();
+    }, 50);
   }
 
+  /**
+   * Handles horizontal movement, jumping, and camera tracking
+   * based on the current keyboard input.
+   */
   handleMovement() {
     if (this.world && this.world.keyboard) {
       if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -75,6 +87,10 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Selects and plays the correct animation depending on
+   * the character's current state (dead, hurt, jumping, walking).
+   */
   handleAnimation() {
     if (this.isDead()) {
       this.playAnimation(this.IMAGES_DEAD);

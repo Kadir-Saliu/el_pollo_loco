@@ -22,18 +22,28 @@ class CoinStatusBar extends DrawableObject {
   }
 
 
- setPercentage(percentage) {
-    this.percentage = percentage;
-    let path = this.IMAGES[this.resolveImageIndex()]
-    this.img = this.imageCache[path];
-  }
+ /**
+ * Sets the current percentage and updates the displayed image accordingly.
+ *
+ * @param {number} percentage - The new percentage value.
+ */
+setPercentage(percentage) {
+  this.percentage = percentage;
+  let path = this.IMAGES[this.resolveImageIndex()];
+  this.img = this.imageCache[path];
+}
 
-   resolveImageIndex() {
-     if (this.percentage >= 100) return 5;
-    if (this.percentage >= 80) return 4;
-    if (this.percentage >= 60) return 3;
-    if (this.percentage >= 40) return 2;
-    if (this.percentage >= 20) return 1;
-    return 0;
-  }
+/**
+ * Determines the image index based on the current percentage (0–100).
+ *
+ * @returns {number} The image index from 0 to 5.
+ */
+resolveImageIndex() {
+  if (this.percentage >= 100) return 5;
+  if (this.percentage >= 80) return 4;
+  if (this.percentage >= 60) return 3;
+  if (this.percentage >= 40) return 2;
+  if (this.percentage >= 20) return 1;
+  return 0;
+}
 }

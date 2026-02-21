@@ -60,33 +60,37 @@ class Endboss extends MovableObject {
     this.world = world;
     this.x = 1800;
   }
+  /**
+   * Runs the endboss behavior loop, switching animations and movement
+   * based on its current state and timing phases.
+   */
   animate() {
     setInterval(() => {
       if (this.isDead()) return this.playAnimation(this.IMAGES_DEAD);
       if (this.isHurt()) return this.playAnimation(this.IMAGES_HURT);
-
       if (!this.hadFirstContact) {
         if (this.world.character.x <= 1360) return;
         this.hadFirstContact = true;
         this.alertStartTime = Date.now();
       }
-
       if (Date.now() - this.alertStartTime < 3000)
         return this.playAnimation(this.IMAGES_ALERT);
-
       if (!this.alertOver) {
         this.alertOver = true;
         this.attackStartTime = Date.now();
       }
-
       if (Date.now() - this.attackStartTime < 1000)
         return this.playAnimation(this.IMAGES_ATTACK);
-
       this.playAnimation(this.IMAGES_WALK);
       this.moveLeft();
     }, 300);
   }
 
+  /**
+   * Applies damage to the endboss and triggers death logic when energy reaches zero.
+   *
+   * @param {number} amount - The damage amount (fixed at 33 in this case).
+   */
   hitEndboss() {
     this.energy -= 33;
     if (this.energy <= 0) {
@@ -103,6 +107,9 @@ class Endboss extends MovableObject {
     this.lastHit = Date.now();
   }
 
+  /**
+   * Moves the endboss to the left based on its speed.
+   */
   moveLeft() {
     this.x -= this.speed;
   }

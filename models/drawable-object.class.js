@@ -12,6 +12,11 @@ class DrawableObject {
     this.img.src = path;
   }
 
+  /**
+   * Draws the object's current image on the canvas.
+   *
+   * @param {CanvasRenderingContext2D} ctx - The rendering context to draw on.
+   */
   draw(ctx) {
     try {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -21,8 +26,19 @@ class DrawableObject {
     }
   }
 
+  /**
+   * Draws a debug frame around the object if it is a drawable game entity.
+   *
+   * @param {CanvasRenderingContext2D} ctx - The rendering context to draw on.
+   */
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Chicken || this instanceof Coin || this instanceof Endboss || this instanceof Bottle) {
+    if (
+      this instanceof Character ||
+      this instanceof Chicken ||
+      this instanceof Coin ||
+      this instanceof Endboss ||
+      this instanceof Bottle
+    ) {
       ctx.beginPath();
       ctx.lindeWidth = "5";
       ctx.strokeStyle = "blue";
@@ -31,6 +47,11 @@ class DrawableObject {
     }
   }
 
+  /**
+   * Loads multiple images into the object's image cache.
+   *
+   * @param {string[]} arr - Array of image file paths.
+   */
   loadImages(arr) {
     arr.forEach((path) => {
       let img = new Image();
