@@ -5,8 +5,10 @@ let keyboard = new Keyboard();
 let level1;
 
 /**
- * Initializes the game by checking whether auto‑start is enabled.
- * If the stored flag is set, it removes it and starts the game.
+ * Initializes the game on page load.
+ * Restores the saved mute state and checks whether the game
+ * should auto‑start based on a stored flag in localStorage.
+ * If auto‑start is enabled, the flag is removed and the game begins.
  */
 function init() {
   try {
@@ -16,23 +18,48 @@ function init() {
       startGame();
     }
   } catch (e) {}
+  initMuteState();
 }
 
 /**
- * Toggles the mute state of all game sounds.
- * Updates the mute button UI to show the current state.
- *
- * @function toggleMute
+ * Toggles the global mute state for all game sounds.
+ * Saves the new state in localStorage, updates the mute button UI,
+ * and unmutes-triggered sounds (e.g., chicken spawn audio) when sound is enabled.
  */
 function toggleMute() {
   muted = !muted;
+  localStorage.setItem("muted", muted);
+
+  updateMuteButton();
+  allSounds.forEach((audio) => (audio.muted = muted));
+
+  if (!muted) {
+    chickenAudio();
+  }
+}
+
+/**
+ * Restores the mute state from localStorage on page load.
+ * Applies the saved mute setting to all game sounds and updates the UI.
+ */
+function initMuteState() {
+  muted = localStorage.getItem("muted") === "true";
+
+  updateMuteButton();
+  allSounds.forEach((audio) => (audio.muted = muted));
+}
+
+/**
+ * Updates the mute button icon to visually reflect the current mute state.
+ * Does not modify audio behavior — purely a UI update.
+ */
+function updateMuteButton() {
   let btn = document.getElementById("unmuteButton");
+
   if (muted) {
     btn.innerHTML = '<img src="./img/assets/mute.png" alt="Mute">';
-    allSounds.forEach((audio) => (audio.muted = true));
   } else {
     btn.innerHTML = '<img src="./img/assets/unmute.png" alt="Unmute">';
-    allSounds.forEach((audio) => (audio.muted = false));
   }
 }
 
@@ -137,11 +164,15 @@ function showMobileControls() {
 }
 
 /**
- * Plays the spawn sound for all chicken enemies in the level.
+ * Plays the spawn sound for all chicken enemies in the current level.
+ * The function exits immediately if the global mute state is active.
+ * Only enemies of type `Chicken` trigger their individual spawn sound.
  *
  * @function chickenAudio
  */
 function chickenAudio() {
+  if (muted) return; // Wenn gemutet, keine Sounds starten
+
   world.level.enemies.forEach((enemy) => {
     if (enemy instanceof Chicken) {
       enemy.playSpawnSound();
