@@ -92,7 +92,7 @@ class World {
           enemy.die();
           this.character.jump();
           this.removeDeadChicken();
-        } else {
+        } else  if (!this.character.isHurt()) {
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
         }
