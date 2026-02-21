@@ -41,7 +41,6 @@ class MovableObject extends DrawableObject {
    * @returns {boolean} True if above.
    */
   isAbove(mo) {
-    console.log(this.y + this.height < mo.y);
     return this.y + this.height < mo.y + 80;
   }
 
