@@ -74,6 +74,7 @@ class World {
     const bottle = new ThrowableObject(
       this.character.x + 50,
       this.character.y + 50,
+      this.character.otherDirection,
     );
 
     this.throwableObject.push(bottle);

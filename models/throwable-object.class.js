@@ -15,14 +15,16 @@ class ThrowableObject extends MovableObject {
     "./img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
   ];
 
-  constructor(x, y) {
+  constructor(x, y, otherDirection) {
     super().loadImage("./img/6_salsa_bottle/salsa_bottle.png");
     this.loadImages(this.BOTTLE_ROTATION);
     this.loadImages(this.BOTTLE_SPLASH);
     this.x = x;
     this.y = y;
+    this.otherDirection = otherDirection;
     this.height = 60;
     this.width = 50;
+    this.otherDirection = this.otherDirection;
     this.throw();
   }
 
@@ -30,12 +32,20 @@ class ThrowableObject extends MovableObject {
    * Throws the bottle by applying upward force, enabling gravity,
    * and playing the rotation animation while moving forward.
    */
-  throw() {
+throw() {
     this.speedY = 30;
     this.applyGravity();
+
     setInterval(() => {
       this.playAnimation(this.BOTTLE_ROTATION);
-      this.x += 10;
+
+      if (this.otherDirection) {
+        this.x -= 10; 
+      } else {
+        this.x += 10; 
+      }
+
     }, 25);
   }
+
 }
