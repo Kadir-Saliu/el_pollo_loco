@@ -156,6 +156,21 @@ function showControls() {
   controls.classList.remove("d_none");
 }
 
+function showImpressum() {
+  let impressum = document.getElementById("impressum");
+  impressum.classList.remove("d_none");
+}
+
+/**
+ * Hides the impressum panel.
+ *
+ * @function hideImpressum
+ */
+function hideImpressum() {
+  let impressum = document.getElementById("impressum");
+  impressum.classList.add("d_none");
+}
+
 /**
  * Hides the controls panel.
  *

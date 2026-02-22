@@ -13,42 +13,47 @@
     <link rel="stylesheet" href="style.css" />
 
     <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-<script src="./js/globals.js"></script>
+    <script src="./js/globals.js"></script>
     <!-- 1. Basis-Klassen -->
-<script src="./models/drawable-object.class.js"></script>
-<script src="./models/movable-object.class.js"></script>
+    <script src="./models/drawable-object.class.js"></script>
+    <script src="./models/movable-object.class.js"></script>
 
-<!-- 2. Objekte, Gegner, Items -->
-<script src="./models/character.class.js"></script>
-<script src="./models/chicken.class.js"></script>
-<script src="./models/endboss.class.js"></script>
-<script src="./models/coin.class.js"></script>
-<script src="./models/bottle.class.js"></script>
-<script src="./models/throwable-object.class.js"></script>
+    <!-- 2. Objekte, Gegner, Items -->
+    <script src="./models/character.class.js"></script>
+    <script src="./models/chicken.class.js"></script>
+    <script src="./models/endboss.class.js"></script>
+    <script src="./models/coin.class.js"></script>
+    <script src="./models/bottle.class.js"></script>
+    <script src="./models/throwable-object.class.js"></script>
 
-<!-- 3. Statusbars -->
-<script src="./models/statusbar/status-bar.class.js"></script>
-<script src="./models/statusbar/coin-status-bar.class.js"></script>
-<script src="./models/statusbar/bottle-status-bar.class.js"></script>
-<script src="./models/statusbar/endboss-status-bar.class.js"></script>
+    <!-- 3. Statusbars -->
+    <script src="./models/statusbar/status-bar.class.js"></script>
+    <script src="./models/statusbar/coin-status-bar.class.js"></script>
+    <script src="./models/statusbar/bottle-status-bar.class.js"></script>
+    <script src="./models/statusbar/endboss-status-bar.class.js"></script>
 
-<!-- 4. Level-Struktur -->
-<script src="./models/level.class.js"></script>
-<script src="./levels/level1.js"></script>
+    <!-- 4. Level-Struktur -->
+    <script src="./models/level.class.js"></script>
+    <script src="./levels/level1.js"></script>
 
-<!-- 5. World (braucht Level, Character, Chicken usw.) -->
-<script src="./models/world.class.js"></script>
+    <!-- 5. World (braucht Level, Character, Chicken usw.) -->
+    <script src="./models/world.class.js"></script>
 
-<!-- 6. Sonstige Klassen -->
-<script src="./models/background.class.js"></script>
-<script src="./models/cloud.class.js"></script>
-<script src="./models/keyboard.class.js"></script>
+    <!-- 6. Sonstige Klassen -->
+    <script src="./models/background.class.js"></script>
+    <script src="./models/cloud.class.js"></script>
+    <script src="./models/keyboard.class.js"></script>
 
-<!-- 7. Game.js (muss GANZ ZUM SCHLUSS kommen!) -->
-<script src="./js/game.js"></script>
+    <!-- 7. Game.js (muss GANZ ZUM SCHLUSS kommen!) -->
+    <script src="./js/game.js"></script>
   </head>
 
   <body onload="init()">
@@ -58,14 +63,9 @@
       <h2>Hilf Pepe, die Münzen zu sammeln und den Endboss zu besiegen!</h2>
 
       <div class="button-container">
-        <button
-          id="startBtn"
-          class="btn btn-secondary start-btn"
-          onclick="startGame()"
-        >
-          Start Game
-        </button>
+        <button id="startBtn" class="btn btn-secondary start-btn" onclick="startGame()" >Start Game </button>
         <button class="btn btn-info" onclick="showControls()">Controls</button>
+        <button class="btn btn-light" onclick="showImpressum()">Impressum</button>
       </div>
 
       <img
@@ -113,7 +113,9 @@
         alt="Fullscreen"
       />
 
-      <button id="unmuteButton" class="unmute-button" onclick="toggleMute()"><img src="./img/assets/unmute.png" alt=""></button>
+      <button id="unmuteButton" class="unmute-button" onclick="toggleMute()">
+        <img src="./img/assets/unmute.png" alt="" />
+      </button>
 
       <div id="canvas-controls" class="d_none">
         <button id="canvas-arrow-left" class="canvas-arrow-left d_none">
@@ -129,9 +131,13 @@
 
     <section id="winScreen" class="win-screen d_none">
       <div>
-      <button class="btn btn-info" onclick="restartGame()">Restart Game</button>
-      <button class="btn btn-info" onclick="backToMainMenu()">Main Menu</button>
-        </div>
+        <button class="btn btn-info" onclick="restartGame()">
+          Restart Game
+        </button>
+        <button class="btn btn-info" onclick="backToMainMenu()">
+          Main Menu
+        </button>
+      </div>
     </section>
     <section id="endScreen" class="end-screen d_none">
       <div class="restart-">
@@ -146,5 +152,108 @@
     <section id="rotate" class="d_none">
       <img src="./img/rotate/rotate.png" alt="" />
     </section>
+
+    <section id="impressum" class="d_none">
+  <button onclick="hideImpressum()" class="close-btn-controls">✕</button>
+
+  <div class="impressum-container">
+    <h2>🐔 Impressum 🐔</h2>
+
+    <div class="impressum-content">
+
+      <!-- Betreiber -->
+      <div class="impressum-section">
+        <h3>Angaben gemäß § 5 TMG</h3>
+        <p>
+          Betreiber der Website:<br>
+          Kadir Saliu<br>
+          Speyerer Straße 22<br>
+          90443 Nürnberg<br>
+          Deutschland
+        </p>
+        <p>
+          <strong>Kontakt:</strong><br>
+          <a href="mailto:kadir_saliu@hotmail.de">kadir_saliu@hotmail.de</a>
+        </p>
+      </div>
+
+      <!-- Verantwortlich -->
+      <div class="impressum-section">
+        <h3>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
+        <p>
+          Kadir Saliu<br>
+          Speyerer Straße 22<br>
+          90443 Nürnberg<br>
+          Deutschland
+        </p>
+      </div>
+
+      <!-- Spielbeschreibung -->
+      <div class="impressum-section">
+        <h3>Spielbeschreibung</h3>
+        <p>
+          El Pollo Loco ist ein browserbasiertes Jump‑and‑Run‑Spiel, in dem der Spieler
+          den Charakter Pepe steuert. Ziel ist es, Münzen zu sammeln und den Endboss zu
+          besiegen. Das Spiel nutzt HTML5 Canvas für die Grafiken und JavaScript für die
+          Spiellogik.
+        </p>
+      </div>
+
+      <!-- Ressourcen -->
+      <div class="impressum-section">
+        <h3>Verwendete Ressourcen</h3>
+        <p>
+          Bilder: Pixabay, Freepik, OpenGameArt<br>
+          Fonts: Google Fonts, Splash Font<br>
+          Audio: Freesound, Zapsplat
+        </p>
+      </div>
+
+      <!-- Haftung -->
+      <div class="impressum-section">
+        <h3>Haftungsausschluss</h3>
+        <p>
+          Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die
+          Richtigkeit, Vollständigkeit und Aktualität der Inhalte wird jedoch keine
+          Gewähr übernommen.
+        </p>
+        <p>
+          Diese Website kann Links zu externen Websites enthalten, auf deren Inhalte
+          kein Einfluss besteht. Für die Inhalte der verlinkten Seiten ist stets der
+          jeweilige Anbieter verantwortlich.
+        </p>
+        <p>
+          Alle Inhalte des Spiels und der Website sind urheberrechtlich geschützt.
+          Eine Vervielfältigung oder Weiterverarbeitung ist ohne Zustimmung nicht
+          gestattet.
+        </p>
+      </div>
+
+      <!-- Datenschutz -->
+      <div class="impressum-section">
+        <h3>Datenschutz</h3>
+        <p>
+          Dieses Spiel speichert keine personenbezogenen Daten auf externen Servern.
+          Es wird ausschließlich der lokale Browser‑Speicher (localStorage) für
+          Einstellungen wie Ton oder Spielstatus verwendet.
+        </p>
+      </div>
+
+      <!-- Kontakt -->
+      <div class="impressum-section">
+        <h3>Kontakt</h3>
+        <p>
+          Für Fragen oder Anregungen:  
+          <a href="mailto:kontakt@example.com">kontakt@example.com</a>
+        </p>
+      </div>
+
+    </div>
+
+    <button onclick="hideImpressum()" class="btn btn-secondary impressum-close-btn">
+      Zurück zum Spiel
+    </button>
+  </div>
+</section>
   </body>
 </html>
