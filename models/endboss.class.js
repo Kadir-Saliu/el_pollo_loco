@@ -4,7 +4,7 @@ class Endboss extends MovableObject {
   y = 60;
   energy = 99;
   world;
-  speed = 10;
+  speed = 20;
 
   IMAGES_WALK = [
     "./img/4_enemie_boss_chicken/1_walk/G1.png",
@@ -49,6 +49,7 @@ class Endboss extends MovableObject {
 
   hadFirstContact = false;
   alertOver = false;
+  attackRange = 10;
 
   constructor(world) {
     super().loadImage(this.IMAGES_ALERT[0]);
@@ -56,8 +57,8 @@ class Endboss extends MovableObject {
       top: 120,
       bottom: 40,
       left: 60,
-      right: 60
-    }
+      right: 60,
+    };
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_WALK);
     this.loadImages(this.IMAGES_ATTACK);
@@ -88,8 +89,34 @@ class Endboss extends MovableObject {
       if (Date.now() - this.attackStartTime < 1000)
         return this.playAnimation(this.IMAGES_ATTACK);
       this.playAnimation(this.IMAGES_WALK);
-      this.moveLeft();
+      this.followCharacter();
     }, 300);
+  }
+
+  /**
+   * Determines the Endboss movement based on the player's position.
+   *
+   * - Moves right if the character is positioned to the right.
+   * - Moves left if the character is positioned to the left and outside attack range.
+   * - Plays the attack animation when the character is within attack range.
+   *
+   * @method followCharacter
+   */
+  followCharacter() {
+    const char = this.world.character;
+    const distance = this.x - char.x;
+    if (distance < 0) {
+      this.otherDirection = true;
+      this.x += this.speed;
+      return;
+    }
+    if (distance > this.attackRange) {
+      this.otherDirection = false;
+      this.x -= this.speed;
+      return;
+    }
+
+    this.playAnimation(this.IMAGES_ATTACK);
   }
 
   /**
@@ -111,12 +138,5 @@ class Endboss extends MovableObject {
       return;
     }
     this.lastHit = Date.now();
-  }
-
-  /**
-   * Moves the endboss to the left based on its speed.
-   */
-  moveLeft() {
-    this.x -= this.speed;
   }
 }

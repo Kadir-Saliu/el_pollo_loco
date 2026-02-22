@@ -114,6 +114,8 @@ class World {
         if (!this.character.isHurt()) {
           this.character.hit();
           this.statusBar.setPercentage(this.character.energy);
+          enemy.speed = 0;
+          setTimeout(() => (enemy.speed = 10), 500);
         }
       }
     });
