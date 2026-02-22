@@ -9,8 +9,48 @@ class MovableObject extends DrawableObject {
   bottle = 0;
   endScreen = document.getElementById("endScreen");
 
+  offset = {
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  };
+
   /**
-   * Applies gravity to the object, updating vertical position and speed.
+   * Returns the left collision boundary including offset.
+   * @returns {number}
+   */
+  left() {
+    return this.x + this.offset.left;
+  }
+
+  /**
+   * Returns the right collision boundary including offset.
+   * @returns {number}
+   */
+  right() {
+    return this.x + this.width - this.offset.right;
+  }
+
+  /**
+   * Returns the top collision boundary including offset.
+   * @returns {number}
+   */
+  top() {
+    return this.y + this.offset.top;
+  }
+
+  /**
+   * Returns the bottom collision boundary including offset.
+   * @returns {number}
+   */
+  bottom() {
+    return this.y + this.height - this.offset.bottom;
+  }
+
+  /**
+   * Applies gravity to the object, updating vertical position and velocity.
+   * Runs at 25 FPS. Objects fall until they reach the ground or move upward.
    */
   applyGravity() {
     setInterval(() => {
@@ -22,48 +62,54 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Checks whether the object is above the ground level.
+   * Determines whether the object is above the ground.
+   * Bottles have no ground and always fall.
    *
-   * @returns {boolean} True if above ground.
+   * @returns {boolean} True if the object is above ground.
    */
   isAboveGround() {
     if (this instanceof ThrowableObject) {
       return true;
-    } else {
-      return this.y < 150;
     }
+    return this.y < 160;
   }
 
   /**
-   * Checks if this object is positioned above another object.
+   * Checks whether this object is above another object AND falling downward.
+   * Used for stomp logic (e.g., killing chickens).
    *
-   * @param {object} mo - The other object.
-   * @returns {boolean} True if above.
+   * @param {MovableObject} mo - The object to compare against.
+   * @returns {boolean} True if this object is stomping the other object.
    */
   isAbove(mo) {
-    return this.y + this.height < mo.y + 80;
+    const stompMargin = 20;
+    return this.speedY < 0 && this.bottom() - stompMargin <= mo.top();
   }
 
   /**
-   * Checks for collision with another object.
+   * Checks whether this object collides with another object using
+   * axis-aligned bounding box (AABB) collision detection.
    *
-   * @param {object} mo - The other object.
-   * @returns {boolean} True if colliding.
+   * @param {MovableObject} mo - The other object.
+   * @returns {boolean} True if the objects overlap.
    */
   isColliding(mo) {
     return (
-      this.x + this.width > mo.x &&
-      this.y + this.height > mo.y &&
-      this.x < mo.x + mo.width &&
-      this.y < mo.y + mo.height
+      this.right() > mo.left() &&
+      this.left() < mo.right() &&
+      this.bottom() > mo.top() &&
+      this.top() < mo.bottom()
     );
   }
 
   /**
-   * Applies damage to the player and ends the game if energy reaches zero.
+   * Applies damage to the object. If energy reaches zero, the game ends.
+   * Also triggers a short hurt state and forces the object to fall downward.
    */
   hit() {
     this.energy -= 5;
+    this.speedY = -5;
+
     if (this.energy < 0) {
       this.energy = 0;
       this.stopGame();
@@ -73,10 +119,11 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Applies damage to the endboss and triggers win logic if defeated.
+   * Applies damage to the endboss. If energy reaches zero, the player wins.
    */
   hitEndboss() {
     this.energy -= 33;
+
     if (this.energy <= 0) {
       this.energy = 0;
       this.winGame();
@@ -86,19 +133,18 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Checks if the object is currently in a hurt state.
+   * Checks whether the object is currently in a hurt state.
+   * Hurt state lasts 1 second after being hit.
    *
-   * @returns {boolean} True if hurt.
+   * @returns {boolean} True if the object is hurt.
    */
   isHurt() {
-    let timepassed = new Date().getTime() - this.lastHit;
-    timepassed = timepassed / 1000;
+    let timepassed = (new Date().getTime() - this.lastHit) / 1000;
     return timepassed < 1;
   }
 
   /**
-   * Checks if the object is dead.
-   *
+   * Checks whether the object is dead.
    * @returns {boolean} True if energy is zero.
    */
   isDead() {
@@ -107,7 +153,6 @@ class MovableObject extends DrawableObject {
 
   /**
    * Increases the coin counter.
-   *
    * @returns {number} Updated coin value.
    */
   getCoin() {
@@ -116,7 +161,6 @@ class MovableObject extends DrawableObject {
 
   /**
    * Increases the bottle counter.
-   *
    * @returns {number} Updated bottle value.
    */
   getBottle() {
