@@ -45,12 +45,11 @@ class Character extends MovableObject {
   constructor() {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
     this.offset = {
-  top: 120,
-  bottom: 0,
-  left: 10,
-  right: 10
-};
-
+      top: 120,
+      bottom: 0,
+      left: 10,
+      right: 10,
+    };
 
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_JUMPING);
@@ -96,8 +95,7 @@ class Character extends MovableObject {
   }
 
   /**
-   * Selects and plays the correct animation depending on
-   * the character's current state (dead, hurt, jumping, walking).
+   * Handles animation depending on state.
    */
   handleAnimation() {
     if (this.isDead()) {
@@ -105,13 +103,46 @@ class Character extends MovableObject {
     } else if (this.isHurt()) {
       this.playAnimation(this.IMAGES_HURT);
     } else if (this.isAboveGround()) {
-      this.playAnimation(this.IMAGES_JUMPING);
+      this.playJumpAnimation();
     } else {
-      if (this.world && this.world.keyboard) {
-        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-          this.playAnimation(this.IMAGES_WALKING);
-        }
-      }
+      this.playWalkingAnimation();
+    }
+  }
+
+  /**
+   * Plays the correct jump frame based on height.
+   */
+  playJumpAnimation() {
+    const currentHeight = this.getJumpHeight();
+    const frameIndex = this.getJumpFrameIndex(currentHeight);
+    this.img = this.imageCache[this.IMAGES_JUMPING[frameIndex]];
+  }
+
+  /**
+   * Calculates how far Pepe is above the ground.
+   */
+  getJumpHeight() {
+    const groundY = 160;
+    return groundY - this.y;
+  }
+
+  /**
+   * Calculates which jump frame to show.
+   */
+  getJumpFrameIndex(currentHeight) {
+    const maxJumpHeight = 195;
+    const frames = this.IMAGES_JUMPING.length;
+    const heightPerFrame = maxJumpHeight / frames;
+    let index = Math.floor(currentHeight / heightPerFrame);
+    return Math.max(0, Math.min(frames - 1, index));
+  }
+
+  /**
+   * Plays walking animation if moving.
+   */
+  playWalkingAnimation() {
+    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+      this.playAnimation(this.IMAGES_WALKING);
     }
   }
 }
