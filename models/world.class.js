@@ -127,7 +127,7 @@ class World {
       if (this.character.isColliding(coin)) {
         this.character.getCoin();
         this.coinStatusBar.setPercentage(this.character.coin);
-        this.character.coinAudio.play();
+        playSound(this.character.coinAudio);
         return false;
       }
       return true;

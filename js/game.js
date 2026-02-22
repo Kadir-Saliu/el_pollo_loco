@@ -22,6 +22,18 @@ function init() {
 }
 
 /**
+ * Plays a sound if the game is not muted.
+ *
+ * @param {HTMLAudioElement} audio - The sound to play.
+ */
+function playSound(audio) {
+  if (!muted) {
+    audio.currentTime = 0;
+    audio.play();
+  }
+}
+
+/**
  * Toggles the global mute state for all game sounds.
  * Saves the new state in localStorage, updates the mute button UI,
  * and unmutes-triggered sounds (e.g., chicken spawn audio) when sound is enabled.
