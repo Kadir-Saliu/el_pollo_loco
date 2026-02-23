@@ -10,7 +10,7 @@ class Endboss extends MovableObject {
     "./img/4_enemie_boss_chicken/1_walk/G1.png",
     "./img/4_enemie_boss_chicken/1_walk/G2.png",
     "./img/4_enemie_boss_chicken/1_walk/G3.png",
-    "./img/4_enemie_boss_chicken/1_walk/G4.png",
+    "./img/4_enemie_boss_chicken/1_walk/G4.png"
   ];
 
   IMAGES_ALERT = [
@@ -21,7 +21,7 @@ class Endboss extends MovableObject {
     "./img/4_enemie_boss_chicken/2_alert/G9.png",
     "./img/4_enemie_boss_chicken/2_alert/G10.png",
     "./img/4_enemie_boss_chicken/2_alert/G11.png",
-    "./img/4_enemie_boss_chicken/2_alert/G12.png",
+    "./img/4_enemie_boss_chicken/2_alert/G12.png"
   ];
 
   IMAGES_ATTACK = [
@@ -32,19 +32,19 @@ class Endboss extends MovableObject {
     "./img/4_enemie_boss_chicken/3_attack/G17.png",
     "./img/4_enemie_boss_chicken/3_attack/G18.png",
     "./img/4_enemie_boss_chicken/3_attack/G19.png",
-    "./img/4_enemie_boss_chicken/3_attack/G20.png",
+    "./img/4_enemie_boss_chicken/3_attack/G20.png"
   ];
 
   IMAGES_HURT = [
     "./img/4_enemie_boss_chicken/4_hurt/G21.png",
     "./img/4_enemie_boss_chicken/4_hurt/G22.png",
-    "./img/4_enemie_boss_chicken/4_hurt/G23.png",
+    "./img/4_enemie_boss_chicken/4_hurt/G23.png"
   ];
 
   IMAGES_DEAD = [
     "./img/4_enemie_boss_chicken/5_dead/G24.png",
     "./img/4_enemie_boss_chicken/5_dead/G25.png",
-    "./img/4_enemie_boss_chicken/5_dead/G26.png",
+    "./img/4_enemie_boss_chicken/5_dead/G26.png"
   ];
 
   hadFirstContact = false;
@@ -65,16 +65,9 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.world = world;
     this.x = 1800;
-    allSounds.push(
-      this.endbossHurtAudio,
-      this.endbossAlertAudio,
-      this.endbossDeadAudio,
-    );
+    allSounds.push(this.endbossHurtAudio, this.endbossAlertAudio, this.endbossDeadAudio);
   }
 
-  /**
-   * Starts the endboss behavior loop.
-   */
   animate() {
     setInterval(() => {
       if (this.handleDeathOrHurt()) return;
@@ -85,10 +78,6 @@ class Endboss extends MovableObject {
     }, 300);
   }
 
-  /**
-   * Handles death or hurt animation states.
-   * @returns {boolean} Whether the boss is dead or hurt.
-   */
   handleDeathOrHurt() {
     if (this.isDead()) {
       this.playAnimation(this.IMAGES_DEAD);
@@ -102,10 +91,6 @@ class Endboss extends MovableObject {
     return false;
   }
 
-  /**
-   * Handles the first contact trigger when the player approaches.
-   * @returns {boolean} Whether first contact logic was executed.
-   */
   handleFirstContact() {
     if (!this.hadFirstContact) {
       if (this.world.character.x <= 1360) return true;
@@ -116,10 +101,6 @@ class Endboss extends MovableObject {
     return false;
   }
 
-  /**
-   * Handles the alert animation and sound phase.
-   * @returns {boolean} Whether the alert phase is active.
-   */
   handleAlertPhase() {
     if (Date.now() - this.alertStartTime < 3000) {
       if (!this.alertSoundPlayed) {
@@ -132,10 +113,6 @@ class Endboss extends MovableObject {
     return false;
   }
 
-  /**
-   * Handles the attack animation phase.
-   * @returns {boolean} Whether the attack phase is active.
-   */
   handleAttackPhase() {
     if (!this.alertOver) {
       this.alertOver = true;
@@ -149,17 +126,11 @@ class Endboss extends MovableObject {
     return false;
   }
 
-  /**
-   * Plays walking animation and moves the boss toward the player.
-   */
   playWalkAndFollow() {
     this.playAnimation(this.IMAGES_WALK);
     this.followCharacter();
   }
 
-  /**
-   * Moves the boss toward the character based on distance.
-   */
   followCharacter() {
     const char = this.world.character;
     const distance = this.x - char.x;
@@ -177,82 +148,59 @@ class Endboss extends MovableObject {
     this.playAnimation(this.IMAGES_ATTACK);
   }
 
-  /**
-   * Applies damage to the endboss.
-   */
   hitEndboss() {
     this.energy -= 33;
-
     if (this.energy <= 0) {
       this.handleDeath();
       return;
     }
-
     this.lastHit = Date.now();
   }
 
-  /**
-   * Handles the complete death sequence.
-   */
   handleDeath() {
-    gameStopped = true;
-    this.setDeathState();
-    this.stopAllChickenAudioSystem();
-    this.playEndbossDeathSound();
-    this.scheduleWinScreen();
-    this.scheduleEndbossRemoval();
-  }
-
-  /**
-   * Sets the death state.
-   */
-  setDeathState() {
     this.energy = 0;
     this.dead = true;
-  }
+    this.stopAllChickenAudioSystem();
+    this.playEndbossDeathSound();
 
-  /**
-   * Stops all chicken audio systems.
-   */
-  stopAllChickenAudioSystem() {
-    stopAllChickenSounds();
-    stopAllSounds();
-    this.world.level.enemies.forEach((enemy) => {
-      if (enemy instanceof Chicken) {
-        enemy.stopChickenSound();
-      }
+    this.playDeathAnimationFully(() => {
+      gameStopped = true;
+      this.winGame();
+      this.scheduleEndbossRemoval();
     });
   }
 
-  /**
-   * Plays and stops the endboss death sound.
-   */
+  stopAllChickenAudioSystem() {
+    stopAllChickenSounds();
+    stopAllSounds();
+    this.world.level.enemies.forEach(enemy => {
+      if (enemy instanceof Chicken) enemy.stopChickenSound();
+    });
+  }
+
   playEndbossDeathSound() {
     playSound(this.endbossDeadAudio);
-
     setTimeout(() => {
-      if (this.endbossDeadAudio) {
-        this.endbossDeadAudio.pause();
-        this.endbossDeadAudio.currentTime = 0;
-      }
+      this.endbossDeadAudio.pause();
+      this.endbossDeadAudio.currentTime = 0;
     }, 1000);
   }
 
-  /**
-   * Schedules the win screen.
-   */
-  scheduleWinScreen() {
-    setTimeout(() => this.winGame(), 1500);
-  }
-
-  /**
-   * Removes the endboss from the level.
-   */
   scheduleEndbossRemoval() {
     setTimeout(() => {
-      this.world.level.enemies = this.world.level.enemies.filter(
-        (enemy) => enemy !== this,
-      );
+      this.world.level.enemies = this.world.level.enemies.filter(e => e !== this);
     }, 1500);
+  }
+
+  playDeathAnimationFully(callback) {
+    let frameIndex = 0;
+    const interval = setInterval(() => {
+      this.playAnimation(this.IMAGES_DEAD);
+      frameIndex++;
+      if (frameIndex >= this.IMAGES_DEAD.length) {
+        clearInterval(interval);
+        callback();
+      }
+    }, 200);
   }
 }

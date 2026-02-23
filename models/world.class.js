@@ -20,7 +20,6 @@ class World {
     this.keyboard = keyboard;
     this.level = level;
     this.setWorld();
-    this.character.animate();
     this.draw();
     this.run();
   }
@@ -206,14 +205,15 @@ class World {
    * Uses requestAnimationFrame for smooth rendering.
    */
   draw() {
-    if (gameStopped) return;
+    
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawBackground();
     this.drawGameObjects();
     this.drawHUD();
     this.drawEndbossStatus();
-
-    requestAnimationFrame(() => this.draw());
+    console.log('DRAW RUnning');
+    
+    animationFrameId = requestAnimationFrame(() => this.draw());
   }
 
   /**

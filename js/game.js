@@ -4,6 +4,7 @@ let world;
 let keyboard = new Keyboard();
 let level1;
 
+
 /**
  * Initializes the game on page load.
  */
@@ -18,6 +19,24 @@ function init() {
   initMuteState();
   checkOrientationBeforeStart();
 }
+
+function initGame() {
+  gameStopped = false;
+  document.getElementById('winScreen').classList.add('d_none'); 
+  hideStartUI();
+  showCanvas();
+
+  level1 = createLevel1();
+  world = new World(canvas, keyboard, level1);
+
+  initMobileControls(world);
+  chickenAudio();
+
+  world.draw(); 
+  console.log('init game started ');
+  
+}
+
 
 /**
  * Plays a sound if the game is not muted.
@@ -85,16 +104,15 @@ function updateMuteButton() {
  */
 function startGame() {
   gameStarted = true;
-  checkOrientationBeforeStart();
-  if (gameStarted) {
-    hideStartUI();
-    showCanvas();
-    level1 = createLevel1();
-    world = new World(canvas, keyboard, level1);
-    initMobileControls(world);
-    chickenAudio();
-  }
+  hideStartUI();
+  showCanvas();
+  level1 = createLevel1();
+  world = new World(canvas, keyboard, level1);
+  initMobileControls(world);
+  chickenAudio();
+  world.draw();
 }
+
 
 /**
  * Displays the game canvas.
@@ -273,11 +291,12 @@ function toggleFullScreen() {
  * Restarts the game by setting the auto-start flag and reloading the page.
  */
 function restartGame() {
-  try {
-    localStorage.setItem("el_pollo_autoStart", "1");
-  } catch (e) {}
-  location.reload();
+  clearAllIntervals();
+  clearAllTimeouts();
+  cancelAnimationFrame(animationFrameId);
+  initGame();
 }
+
 
 /**
  * Returns to the main menu by clearing the auto-start flag and reloading the page.
