@@ -38,10 +38,15 @@ class Chicken extends MovableObject {
    * Movement runs at 60 FPS, animation at 10 FPS.
    */
   animate() {
-    setInterval(() => this.moveChicken(), 1000 / 60);
     setInterval(() => {
+      if (gameStopped) return;
+      this.moveChicken();
+    }, 1000 / 60);
+
+    setInterval(() => {
+      if (gameStopped) return;
       if (this.dead) {
-        this.playAnimation(this.IMAGES_DEATH);
+        this.playAnimation(this.IMAGES_DEAD);
         return;
       }
       this.playAnimation(this.IMAGES_WALKING);
@@ -81,7 +86,7 @@ class Chicken extends MovableObject {
    */
   playSpawnSound() {
     this.spawnSoundInterval = setInterval(() => {
-      if (this.dead) {
+      if (gameStopped || this.dead) {
         this.stopChickenSound();
         return;
       }

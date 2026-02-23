@@ -195,6 +195,7 @@ class Endboss extends MovableObject {
    * Handles the complete death sequence.
    */
   handleDeath() {
+    gameStopped = true;
     this.setDeathState();
     this.stopAllChickenAudioSystem();
     this.playEndbossDeathSound();
@@ -215,7 +216,7 @@ class Endboss extends MovableObject {
    */
   stopAllChickenAudioSystem() {
     stopAllChickenSounds();
-
+    stopAllSounds();
     this.world.level.enemies.forEach((enemy) => {
       if (enemy instanceof Chicken) {
         enemy.stopChickenSound();

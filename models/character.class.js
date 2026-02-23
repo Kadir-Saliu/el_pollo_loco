@@ -66,28 +66,32 @@ class Character extends MovableObject {
    * Starts movement and animation loops.
    */
   animate() {
-    setInterval(() => this.handleMovement(), 1000 / 60);
-    setInterval(() => this.handleAnimation(), 50);
+    setInterval(() => {
+      if (gameStopped) return;
+      this.handleMovement();
+    }, 1000 / 60);
+
+    setInterval(() => {
+      if (gameStopped) return;
+      this.handleAnimation();
+    }, 50);
   }
 
   /**
    * Handles character movement based on keyboard input.
    */
   handleMovement() {
+    if (gameStopped) return;
     if (!this.world || !this.world.keyboard) return;
-
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.moveRight();
     }
-
     if (this.world.keyboard.LEFT && this.x > 0) {
       this.moveLeft();
     }
-
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.jump();
     }
-
     this.world.camera_x = -this.x + 100;
   }
 
@@ -97,6 +101,7 @@ class Character extends MovableObject {
    * matching state stops further processing.
    */
   handleAnimation() {
+    if (gameStopped) return;
     if (this.handleDeathAnimation()) return;
     if (this.handleHurtAnimation()) return;
     this.handleMovementAnimation();
@@ -118,6 +123,7 @@ class Character extends MovableObject {
    * @returns {boolean} Whether the character is hurt.
    */
   handleHurtAnimation() {
+    if (gameStopped) return;
     if (!this.isHurt()) return false;
 
     this.playAnimation(this.IMAGES_HURT);
@@ -134,8 +140,8 @@ class Character extends MovableObject {
    * Handles jump or walking animation depending on state.
    */
   handleMovementAnimation() {
+    if (gameStopped) return;
     this.isHurtSoundPlayed = false;
-
     if (this.isAboveGround()) {
       this.playJumpAnimation();
     } else {

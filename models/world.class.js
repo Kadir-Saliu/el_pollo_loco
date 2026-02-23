@@ -44,6 +44,7 @@ class World {
    */
   run() {
     setInterval(() => {
+      if (gameStopped) return;
       this.checkCollision();
       this.checkThrowObjects();
     }, 1000 / 60);
@@ -121,6 +122,7 @@ class World {
    * Applies damage to the character and updates the status bar.
    */
   handleDamage() {
+    if (gameStopped) return;
     if (!this.character.isHurt()) {
       this.character.hit();
       this.statusBar.setPercentage(this.character.energy);
@@ -161,6 +163,7 @@ class World {
    * Includes splash animation, bottle removal, and enemy damage.
    */
   checkCollisionEnemyWithThrowableBottle() {
+    if (gameStopped) return;
     this.level.enemies.forEach((enemy) => {
       this.throwableObject.forEach((bottle) => {
         if (!bottle.isColliding(enemy)) return;
@@ -203,8 +206,8 @@ class World {
    * Uses requestAnimationFrame for smooth rendering.
    */
   draw() {
+    if (gameStopped) return;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
     this.drawBackground();
     this.drawGameObjects();
     this.drawHUD();

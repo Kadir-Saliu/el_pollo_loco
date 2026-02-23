@@ -134,6 +134,7 @@ class MovableObject extends DrawableObject {
    * @returns {boolean}
    */
   isHurt() {
+    if (gameStopped) return false;
     let timepassed = (new Date().getTime() - this.lastHit) / 1000;
     return timepassed < 1;
   }
@@ -193,6 +194,7 @@ class MovableObject extends DrawableObject {
    * Makes the object jump by applying upward velocity.
    */
   jump() {
+    if (gameStopped) return;
     this.speedY = 30;
     playSound(this.jumpAudio);
   }
