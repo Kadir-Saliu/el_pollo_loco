@@ -5,14 +5,11 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
-
   statusBar = new StatusBar();
   coinStatusBar = new CoinStatusBar();
   bottleStatusBar = new BottleStatusBar();
   endbossStautsBar = new EndbossStatusBar();
-
   hadFirstContactWithEndboss = false;
-
   throwableObject = [];
   cooldown = 2000;
   lastBottleThrow = 0;
@@ -22,7 +19,6 @@ class World {
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.level = level;
-
     this.setWorld();
     this.character.animate();
     this.draw();
@@ -34,7 +30,6 @@ class World {
    */
   setWorld() {
     this.character.world = this;
-
     this.level.enemies.forEach((enemy) => {
       if (enemy instanceof Endboss) {
         enemy.world = this;
@@ -70,18 +65,14 @@ class World {
    */
   throwBottle() {
     this.lastBottleThrow = Date.now();
-
     const bottle = new ThrowableObject(
       this.character.x + 50,
       this.character.y + 50,
       this.character.otherDirection,
     );
-
     this.throwableObject.push(bottle);
-
     this.character.bottle = Math.max(0, this.character.bottle - 20);
     this.bottleStatusBar.setPercentage(this.character.bottle);
-
     this.checkCollision();
   }
 
@@ -96,29 +87,49 @@ class World {
   }
 
   /**
-   * Handles collisions between the character and enemies.
-   * Includes stomp logic, damage handling, and enemy removal.
+   * Checks collisions between the character and all enemies.
+   * Determines whether the character performs a stomp or takes damage.
+   * Delegates stomp and damage handling to separate helper functions.
    */
   checkCollisionEnemyWithCharacter() {
-    this.level.enemies.forEach((enemy) => {
-      if (!enemy.dead && this.character.isColliding(enemy)) {
-        // Stomp has priority
-        if (this.character.isAbove(enemy)) {
-          enemy.die();
-          this.character.jump();
-          this.removeDeadChicken();
-          return;
-        }
-
-        // Damage only if not currently hurt
-        if (!this.character.isHurt()) {
-          this.character.hit();
-          this.statusBar.setPercentage(this.character.energy);
-          enemy.speed = 0;
-          setTimeout(() => (enemy.speed = 10), 500);
-        }
+    for (let enemy of this.level.enemies) {
+      if (enemy.dead || !this.character.isColliding(enemy)) continue;
+      if (this.character.isAbove(enemy)) {
+        this.handleStomp(enemy);
+        return;
       }
-    });
+      this.handleDamage();
+    }
+  }
+
+  /**
+   * Handles stomp logic when the character lands on an enemy from above.
+   * Kills all enemies currently colliding with the character (multi-stomp),
+   * triggers a bounce jump, and removes defeated enemies from the level.
+   *
+   * @param {Object} enemy - The enemy that triggered the stomp event.
+   */
+  handleStomp(enemy) {
+    for (let otherEnemy of this.level.enemies) {
+      if (this.character.isColliding(otherEnemy)) {
+        otherEnemy.die();
+      }
+    }
+
+    this.character.jump();
+    this.character.y = 160;
+    this.removeDeadChicken();
+  }
+
+  /**
+   * Applies damage to the character if they collide with an enemy
+   * without performing a stomp. Updates the status bar accordingly.
+   */
+  handleDamage() {
+    if (!this.character.isHurt()) {
+      this.character.hit();
+      this.statusBar.setPercentage(this.character.energy);
+    }
   }
 
   /**
@@ -200,9 +211,9 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.drawBackground();
+    this.drawGameObjects();
     this.drawHUD();
     this.drawEndbossStatus();
-    this.drawGameObjects();
 
     requestAnimationFrame(() => this.draw());
   }

@@ -297,6 +297,17 @@ h1 {
   z-index: 999;
 }
 
+/* Portrait: show the rotate image upright; other UI is hidden by JS */
+@media (orientation: portrait) {
+  #rotate img {
+    transform: translate(-50%, -50%);
+    max-width: 90vmin;
+    max-height: 90vmin;
+    width: auto;
+    height: auto;
+  }
+}
+
 @media only screen and (max-width: 928px) {
   canvas {
     width: 100%;

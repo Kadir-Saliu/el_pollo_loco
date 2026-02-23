@@ -19,6 +19,8 @@ function init() {
     }
   } catch (e) {}
   initMuteState();
+  // Ensure orientation is evaluated on load so portrait shows only the rotate image
+  checkOrientationBeforeStart();
 }
 
 /**
@@ -83,19 +85,13 @@ function updateMuteButton() {
  */
 function startGame() {
   gameStarted = true;
-
   checkOrientationBeforeStart();
-
   if (gameStarted) {
     hideStartUI();
-
     showCanvas();
-
     level1 = createLevel1();
     world = new World(canvas, keyboard, level1);
-
     initMobileControls(world);
-
     chickenAudio();
   }
 }
@@ -128,22 +124,89 @@ function hideStartUI() {
 }
 
 /**
- * Checks the device orientation and pauses the game if in portrait mode.
- * Listens for orientation changes and resize events.
- *
- * @function checkOrientationBeforeStart
+ * Checks the device orientation and updates the UI and game state accordingly.
+ * Delegates portrait and landscape handling to helper functions and ensures
+ * orientation listeners are only added once.
  */
 function checkOrientationBeforeStart() {
-  const warning = document.getElementById("rotate");
-  if (window.innerHeight > window.innerWidth) {
-    warning.classList.remove("d_none");
-    if (world) world.stopGame = true;
+  const interfaceElements = getInterfaceElements();
+  const isPortrait = window.innerHeight > window.innerWidth;
+
+  if (isPortrait) {
+    handlePortraitMode(interfaceElements);
   } else {
-    warning.classList.add("d_none");
-    if (world) world.stopGame = false;
+    handleLandscapeMode(interfaceElements);
   }
+
+  addOrientationListenersOnce();
+}
+
+/**
+ * Collects and returns all UI elements required for orientation handling.
+ *
+ * @returns {Object} An object containing references to relevant DOM elements.
+ */
+function getInterfaceElements() {
+  return {
+    warning: document.getElementById("rotate"),
+    canvasWrapper: document.getElementById("canvasWrapper"),
+    startScreen: document.getElementById("startScreen"),
+    controls: document.getElementById("controls"),
+    h1: document.getElementById("h1"),
+    canvasControls: document.getElementById("canvas-controls"),
+    unmuteBtn: document.getElementById("unmuteButton"),
+  };
+}
+
+/**
+ * Applies UI changes for portrait mode and pauses the game.
+ *
+ * @param {Object} interfaceElements - The interface elements returned by getInterfaceElements().
+ */
+function handlePortraitMode(interfaceElements) {
+  interfaceElements.warning?.classList.remove("d_none");
+  interfaceElements.canvasWrapper?.classList.add("d_none");
+  interfaceElements.startScreen?.classList.add("d_none");
+  interfaceElements.controls?.classList.add("d_none");
+  interfaceElements.h1?.classList.add("d_none");
+  interfaceElements.canvasControls?.classList.add("d_none");
+  interfaceElements.unmuteBtn?.classList.add("d_none");
+
+  if (world) world.stopGame = true;
+}
+
+/**
+ * Applies UI changes for landscape mode and resumes the game if applicable.
+ *
+ * @param {Object} interfaceElements - The interface elements returned by getInterfaceElements().
+ */
+function handleLandscapeMode(interfaceElements) {
+  interfaceElements.warning?.classList.add("d_none");
+  interfaceElements.unmuteBtn?.classList.remove("d_none");
+
+  if (gameStarted) {
+    interfaceElements.canvasWrapper?.classList.remove("d_none");
+    interfaceElements.canvasControls?.classList.remove("d_none");
+    interfaceElements.startScreen?.classList.add("d_none");
+  } else {
+    interfaceElements.startScreen?.classList.remove("d_none");
+    interfaceElements.canvasWrapper?.classList.add("d_none");
+  }
+
+  if (world) world.stopGame = false;
+}
+
+/**
+ * Ensures orientation listeners are only registered once to prevent
+ * duplicate event handlers from accumulating.
+ */
+function addOrientationListenersOnce() {
+  if (addOrientationListenersOnce._added) return;
+
   window.addEventListener("resize", checkOrientationBeforeStart);
   window.addEventListener("orientationchange", checkOrientationBeforeStart);
+
+  addOrientationListenersOnce._added = true;
 }
 
 /**
@@ -198,7 +261,8 @@ function showMobileControls() {
  * @function chickenAudio
  */
 function chickenAudio() {
-  if (muted) return; // Wenn gemutet, keine Sounds starten
+  if (!world || !world.level || !world.level.enemies) return;
+  if (muted) return;
 
   world.level.enemies.forEach((enemy) => {
     if (enemy instanceof Chicken) {
@@ -243,15 +307,6 @@ function backToMainMenu() {
   } catch (e) {}
   location.reload();
 }
-
-/**
- * Handles keyboard input events for game controls.
- *
- * @function handleKey
- * @param {number} code - The key code of the pressed or released key.
- * @param {boolean} isPressed - True if the key was pressed, false if released.
- */
-function handleKey(code, isPressed) {}
 
 window.addEventListener("keydown", (event) => {
   handleKey(event.keyCode, true);

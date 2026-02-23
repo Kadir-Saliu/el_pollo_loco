@@ -82,7 +82,7 @@ class MovableObject extends DrawableObject {
    * @returns {boolean} True if this object is stomping the other object.
    */
   isAbove(mo) {
-    const stompMargin = 20;
+    const stompMargin = 60;
     return this.speedY < 0 && this.bottom() - stompMargin <= mo.top();
   }
 

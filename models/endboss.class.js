@@ -51,14 +51,13 @@ class Endboss extends MovableObject {
   alertOver = false;
   attackRange = 10;
 
+  endbossHurtAudio = new Audio("audio/endboss-hurt.mp3");
+  endbossAlertAudio = new Audio("audio/endboss-alert.mp3");
+  endbossDeadAudio = new Audio("audio/endboss-dead.mp3");
+
   constructor(world) {
     super().loadImage(this.IMAGES_ALERT[0]);
-    this.offset = {
-      top: 120,
-      bottom: 40,
-      left: 60,
-      right: 60,
-    };
+    this.offset = { top: 120, bottom: 40, left: 60, right: 60 };
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_WALK);
     this.loadImages(this.IMAGES_ATTACK);
@@ -67,44 +66,99 @@ class Endboss extends MovableObject {
     this.world = world;
     this.x = 1800;
   }
+
   /**
-   * Runs the endboss behavior loop, switching animations and movement
-   * based on its current state and timing phases.
+   * Runs the endboss behavior loop.
    */
   animate() {
     setInterval(() => {
-      if (this.isDead()) return this.playAnimation(this.IMAGES_DEAD);
-      if (this.isHurt()) return this.playAnimation(this.IMAGES_HURT);
-      if (!this.hadFirstContact) {
-        if (this.world.character.x <= 1360) return;
-        this.hadFirstContact = true;
-        this.alertStartTime = Date.now();
-      }
-      if (Date.now() - this.alertStartTime < 3000)
-        return this.playAnimation(this.IMAGES_ALERT);
-      if (!this.alertOver) {
-        this.alertOver = true;
-        this.attackStartTime = Date.now();
-      }
-      if (Date.now() - this.attackStartTime < 1000)
-        return this.playAnimation(this.IMAGES_ATTACK);
-      this.playAnimation(this.IMAGES_WALK);
-      this.followCharacter();
+      if (this.handleDeathOrHurt()) return;
+      if (this.handleFirstContact()) return;
+      if (this.handleAlertPhase()) return;
+      if (this.handleAttackPhase()) return;
+      this.playWalkAndFollow();
     }, 300);
   }
 
   /**
-   * Determines the Endboss movement based on the player's position.
-   *
-   * - Moves right if the character is positioned to the right.
-   * - Moves left if the character is positioned to the left and outside attack range.
-   * - Plays the attack animation when the character is within attack range.
-   *
-   * @method followCharacter
+   * Handles death and hurt states.
+   * @returns {boolean}
+   */
+  handleDeathOrHurt() {
+    if (this.isDead()) {
+      this.playAnimation(this.IMAGES_DEAD);
+      return true;
+    }
+    if (this.isHurt()) {
+      playSound(this.endbossHurtAudio);
+      this.playAnimation(this.IMAGES_HURT);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Detects first contact with the boss.
+   * @returns {boolean}
+   */
+  handleFirstContact() {
+    if (!this.hadFirstContact) {
+      if (this.world.character.x <= 1360) return true;
+      this.hadFirstContact = true;
+      this.alertStartTime = Date.now();
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Plays alert animation and sound.
+   * @returns {boolean}
+   */
+  handleAlertPhase() {
+    if (Date.now() - this.alertStartTime < 3000) {
+      if (!this.alertSoundPlayed) {
+        playSound(this.endbossAlertAudio);
+        this.alertSoundPlayed = true;
+      }
+      this.playAnimation(this.IMAGES_ALERT);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Plays attack animation for 1 second.
+   * @returns {boolean}
+   */
+  handleAttackPhase() {
+    if (!this.alertOver) {
+      this.alertOver = true;
+      this.attackStartTime = Date.now();
+      return true;
+    }
+    if (Date.now() - this.attackStartTime < 1000) {
+      this.playAnimation(this.IMAGES_ATTACK);
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Plays walk animation and moves the boss.
+   */
+  playWalkAndFollow() {
+    this.playAnimation(this.IMAGES_WALK);
+    this.followCharacter();
+  }
+
+  /**
+   * Moves the boss toward the player.
    */
   followCharacter() {
     const char = this.world.character;
     const distance = this.x - char.x;
+
     if (distance < 0) {
       this.otherDirection = true;
       this.x += this.speed;
@@ -115,28 +169,39 @@ class Endboss extends MovableObject {
       this.x -= this.speed;
       return;
     }
-
     this.playAnimation(this.IMAGES_ATTACK);
   }
 
   /**
    * Applies damage to the endboss and triggers death logic when energy reaches zero.
-   *
-   * @param {number} amount - The damage amount (fixed at 33 in this case).
    */
   hitEndboss() {
     this.energy -= 33;
+
     if (this.energy <= 0) {
-      this.energy = 0;
-      this.dead = true;
-      setTimeout(() => this.winGame(), 1500);
-      setTimeout(() => {
-        this.world.level.enemies = this.world.level.enemies.filter(
-          (e) => e !== this,
-        );
-      }, 1500);
+      this.handleDeath();
       return;
     }
+
     this.lastHit = Date.now();
+  }
+
+  /**
+   * Handles the complete death sequence of the endboss.
+   */
+  handleDeath() {
+    this.energy = 0;
+    this.dead = true;
+    playSound(this.endbossDeadAudio);
+    setTimeout(() => {
+      this.enndbossDeadAudio.pause();
+      this.enndbossDeadAudio.currentTime = 0;
+    }, 1000);
+    setTimeout(() => this.winGame(), 1500);
+    setTimeout(() => {
+      this.world.level.enemies = this.world.level.enemies.filter(
+        (enemy) => enemy !== this,
+      );
+    }, 1500);
   }
 }

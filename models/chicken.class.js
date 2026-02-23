@@ -15,18 +15,18 @@ class Chicken extends MovableObject {
 
   chickenAudio = new Audio("audio/chicken-noise-228106.mp3");
 
-  constructor() {
+  constructor(xPosition) {
     super();
     this.offset = {
       top: 15,
       bottom: 5,
-      left: 10,
-      right: 10,
+      left: 20,
+      right: 20,
     };
     this.loadImage("./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_DEATH);
-    this.x = 400 + Math.random() * 500;
+    this.x = xPosition;
     this.speed = 0.15 + Math.random() * 0.25;
     this.animate();
     allSounds.push(this.chickenAudio);
@@ -62,9 +62,7 @@ class Chicken extends MovableObject {
   die() {
     this.dead = true;
     this.speed = 0;
-
     this.playAnimation(this.IMAGES_DEATH);
-
     setTimeout(() => {
       this.y += 20;
     }, 100);
