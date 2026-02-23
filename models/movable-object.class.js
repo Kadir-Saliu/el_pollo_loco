@@ -63,9 +63,8 @@ class MovableObject extends DrawableObject {
 
   /**
    * Determines whether the object is above the ground.
-   * Bottles have no ground and always fall.
-   *
-   * @returns {boolean} True if the object is above ground.
+   * Throwable objects always return true.
+   * @returns {boolean}
    */
   isAboveGround() {
     if (this instanceof ThrowableObject) {
@@ -76,10 +75,9 @@ class MovableObject extends DrawableObject {
 
   /**
    * Checks whether this object is above another object AND falling downward.
-   * Used for stomp logic (e.g., killing chickens).
-   *
-   * @param {MovableObject} mo - The object to compare against.
-   * @returns {boolean} True if this object is stomping the other object.
+   * Used for stomp logic.
+   * @param {MovableObject} mo
+   * @returns {boolean}
    */
   isAbove(mo) {
     const stompMargin = 60;
@@ -87,11 +85,9 @@ class MovableObject extends DrawableObject {
   }
 
   /**
-   * Checks whether this object collides with another object using
-   * axis-aligned bounding box (AABB) collision detection.
-   *
-   * @param {MovableObject} mo - The other object.
-   * @returns {boolean} True if the objects overlap.
+   * Checks whether this object collides with another object using AABB detection.
+   * @param {MovableObject} mo
+   * @returns {boolean}
    */
   isColliding(mo) {
     return (
@@ -104,7 +100,7 @@ class MovableObject extends DrawableObject {
 
   /**
    * Applies damage to the object. If energy reaches zero, the game ends.
-   * Also triggers a short hurt state and forces the object to fall downward.
+   * Also triggers a short hurt state and upward knockback.
    */
   hit() {
     this.energy -= 5;
@@ -135,8 +131,7 @@ class MovableObject extends DrawableObject {
   /**
    * Checks whether the object is currently in a hurt state.
    * Hurt state lasts 1 second after being hit.
-   *
-   * @returns {boolean} True if the object is hurt.
+   * @returns {boolean}
    */
   isHurt() {
     let timepassed = (new Date().getTime() - this.lastHit) / 1000;
@@ -145,7 +140,7 @@ class MovableObject extends DrawableObject {
 
   /**
    * Checks whether the object is dead.
-   * @returns {boolean} True if energy is zero.
+   * @returns {boolean}
    */
   isDead() {
     return this.energy == 0;
@@ -153,7 +148,7 @@ class MovableObject extends DrawableObject {
 
   /**
    * Increases the coin counter.
-   * @returns {number} Updated coin value.
+   * @returns {number}
    */
   getCoin() {
     return (this.coin += 20);
@@ -161,7 +156,7 @@ class MovableObject extends DrawableObject {
 
   /**
    * Increases the bottle counter.
-   * @returns {number} Updated bottle value.
+   * @returns {number}
    */
   getBottle() {
     return (this.bottle += 20);
@@ -169,8 +164,7 @@ class MovableObject extends DrawableObject {
 
   /**
    * Plays the next frame of the given animation sequence.
-   *
-   * @param {string[]} images - Array of image paths.
+   * @param {string[]} images
    */
   playAnimation(images) {
     let i = this.currentImage % images.length;
@@ -219,8 +213,7 @@ class MovableObject extends DrawableObject {
 
   /**
    * Displays the given end screen and hides the canvas.
-   *
-   * @param {HTMLElement} screen - The screen to show.
+   * @param {HTMLElement} screen
    */
   showEndScreen(screen) {
     document.getElementById("canvasWrapper").classList.add("d_none");

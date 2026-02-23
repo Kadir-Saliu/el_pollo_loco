@@ -10,6 +10,10 @@ class BottleStatusBar extends DrawableObject {
 
   percentage = 0;
 
+  /**
+   * Creates a new bottle status bar and initializes its position,
+   * size, images, and starting percentage.
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES);
@@ -20,29 +24,26 @@ class BottleStatusBar extends DrawableObject {
     this.setPercentage(0);
   }
 
- /**
- * Updates the percentage value and loads the corresponding image.
- *
- * @param {number} percentage - The new percentage to display.
- */
-setPercentage(percentage) {
-  this.percentage = percentage;
-  let path = this.IMAGES[this.resolveImageIndex()];
-  this.img = this.imageCache[path];
-}
+  /**
+   * Updates the displayed percentage and loads the corresponding image.
+   * @param {number} percentage - The new percentage value (0–100).
+   */
+  setPercentage(percentage) {
+    this.percentage = percentage;
+    let path = this.IMAGES[this.resolveImageIndex()];
+    this.img = this.imageCache[path];
+  }
 
   /**
- * Returns the image index based on the current percentage value.
- * Higher percentages map to higher image indices (0–5).
- *
- * @returns {number} The resolved image index.
- */
-resolveImageIndex() {
-  if (this.percentage >= 100) return 5;
-  if (this.percentage >= 80) return 4;
-  if (this.percentage >= 60) return 3;
-  if (this.percentage >= 40) return 2;
-  if (this.percentage >= 20) return 1;
-  return 0;
-}
+   * Determines the image index based on the current percentage.
+   * @returns {number} The resolved image index (0–5).
+   */
+  resolveImageIndex() {
+    if (this.percentage >= 100) return 5;
+    if (this.percentage >= 80) return 4;
+    if (this.percentage >= 60) return 3;
+    if (this.percentage >= 40) return 2;
+    if (this.percentage >= 20) return 1;
+    return 0;
+  }
 }

@@ -65,10 +65,15 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.world = world;
     this.x = 1800;
+    allSounds.push(
+      this.endbossHurtAudio,
+      this.endbossAlertAudio,
+      this.endbossDeadAudio,
+    );
   }
 
   /**
-   * Runs the endboss behavior loop.
+   * Starts the endboss behavior loop.
    */
   animate() {
     setInterval(() => {
@@ -81,8 +86,8 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Handles death and hurt states.
-   * @returns {boolean}
+   * Handles death or hurt animation states.
+   * @returns {boolean} Whether the boss is dead or hurt.
    */
   handleDeathOrHurt() {
     if (this.isDead()) {
@@ -98,8 +103,8 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Detects first contact with the boss.
-   * @returns {boolean}
+   * Handles the first contact trigger when the player approaches.
+   * @returns {boolean} Whether first contact logic was executed.
    */
   handleFirstContact() {
     if (!this.hadFirstContact) {
@@ -112,8 +117,8 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Plays alert animation and sound.
-   * @returns {boolean}
+   * Handles the alert animation and sound phase.
+   * @returns {boolean} Whether the alert phase is active.
    */
   handleAlertPhase() {
     if (Date.now() - this.alertStartTime < 3000) {
@@ -128,8 +133,8 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Plays attack animation for 1 second.
-   * @returns {boolean}
+   * Handles the attack animation phase.
+   * @returns {boolean} Whether the attack phase is active.
    */
   handleAttackPhase() {
     if (!this.alertOver) {
@@ -145,7 +150,7 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Plays walk animation and moves the boss.
+   * Plays walking animation and moves the boss toward the player.
    */
   playWalkAndFollow() {
     this.playAnimation(this.IMAGES_WALK);
@@ -153,7 +158,7 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Moves the boss toward the player.
+   * Moves the boss toward the character based on distance.
    */
   followCharacter() {
     const char = this.world.character;
@@ -173,7 +178,7 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Applies damage to the endboss and triggers death logic when energy reaches zero.
+   * Applies damage to the endboss.
    */
   hitEndboss() {
     this.energy -= 33;
@@ -187,17 +192,62 @@ class Endboss extends MovableObject {
   }
 
   /**
-   * Handles the complete death sequence of the endboss.
+   * Handles the complete death sequence.
    */
   handleDeath() {
+    this.setDeathState();
+    this.stopAllChickenAudioSystem();
+    this.playEndbossDeathSound();
+    this.scheduleWinScreen();
+    this.scheduleEndbossRemoval();
+  }
+
+  /**
+   * Sets the death state.
+   */
+  setDeathState() {
     this.energy = 0;
     this.dead = true;
+  }
+
+  /**
+   * Stops all chicken audio systems.
+   */
+  stopAllChickenAudioSystem() {
+    stopAllChickenSounds();
+
+    this.world.level.enemies.forEach((enemy) => {
+      if (enemy instanceof Chicken) {
+        enemy.stopChickenSound();
+      }
+    });
+  }
+
+  /**
+   * Plays and stops the endboss death sound.
+   */
+  playEndbossDeathSound() {
     playSound(this.endbossDeadAudio);
+
     setTimeout(() => {
-      this.enndbossDeadAudio.pause();
-      this.enndbossDeadAudio.currentTime = 0;
+      if (this.endbossDeadAudio) {
+        this.endbossDeadAudio.pause();
+        this.endbossDeadAudio.currentTime = 0;
+      }
     }, 1000);
+  }
+
+  /**
+   * Schedules the win screen.
+   */
+  scheduleWinScreen() {
     setTimeout(() => this.winGame(), 1500);
+  }
+
+  /**
+   * Removes the endboss from the level.
+   */
+  scheduleEndbossRemoval() {
     setTimeout(() => {
       this.world.level.enemies = this.world.level.enemies.filter(
         (enemy) => enemy !== this,

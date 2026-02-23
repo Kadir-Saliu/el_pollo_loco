@@ -81,10 +81,10 @@ function createLevel1() {
  * Generates a random X-position within a given range.
  * Ensures a minimum distance from previously used positions.
  *
- * @param {number[]} usedPositions - Array storing previously used X-positions.
- * @param {number} minX - Minimum X value for spawning.
- * @param {number} maxX - Maximum X value for spawning.
- * @param {number} minDistance - Minimum distance between objects.
+ * @param {number[]} usedPositions - Array of previously used X-positions.
+ * @param {number} minX - Minimum allowed X value.
+ * @param {number} maxX - Maximum allowed X value.
+ * @param {number} minDistance - Minimum distance between generated positions.
  * @returns {number} A valid X-position within the given constraints.
  */
 function generateSpawnX(usedPositions, minX, maxX, minDistance) {
@@ -97,6 +97,7 @@ function generateSpawnX(usedPositions, minX, maxX, minDistance) {
       (existing) => Math.abs(existing - xPosition) < minDistance,
     )
   );
+
   usedPositions.push(xPosition);
   return xPosition;
 }

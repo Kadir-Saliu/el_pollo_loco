@@ -30,10 +30,12 @@ class Chicken extends MovableObject {
     this.speed = 0.15 + Math.random() * 0.25;
     this.animate();
     allSounds.push(this.chickenAudio);
+    allChickenSounds.push(this.chickenAudio);
   }
 
   /**
    * Starts movement and animation loops for the chicken.
+   * Movement runs at 60 FPS, animation at 10 FPS.
    */
   animate() {
     setInterval(() => this.moveChicken(), 1000 / 60);
@@ -47,7 +49,7 @@ class Chicken extends MovableObject {
   }
 
   /**
-   * Moves the chicken left unless it is dead.
+   * Moves the chicken left across the screen unless it is dead.
    */
   moveChicken() {
     if (!this.dead) {
@@ -57,12 +59,13 @@ class Chicken extends MovableObject {
 
   /**
    * Marks the chicken as dead, plays the death animation,
-   * and schedules its removal from the world.
+   * applies a slight downward movement, and schedules removal.
    */
   die() {
     this.dead = true;
     this.speed = 0;
     this.playAnimation(this.IMAGES_DEATH);
+
     setTimeout(() => {
       this.y += 20;
     }, 100);
@@ -73,7 +76,8 @@ class Chicken extends MovableObject {
   }
 
   /**
-   * Repeatedly plays the chicken sound unless the chicken is dead.
+   * Repeatedly plays the chicken sound at intervals unless the chicken is dead.
+   * The interval stops automatically when the chicken dies.
    */
   playSpawnSound() {
     this.spawnSoundInterval = setInterval(() => {
@@ -88,7 +92,7 @@ class Chicken extends MovableObject {
   }
 
   /**
-   * Stops the chicken sound and clears the sound interval.
+   * Stops the chicken sound and clears the active sound interval.
    */
   stopChickenSound() {
     this.chickenAudio.pause();

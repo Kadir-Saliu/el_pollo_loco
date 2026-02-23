@@ -32,7 +32,7 @@ class ThrowableObject extends MovableObject {
    * Throws the bottle by applying upward force, enabling gravity,
    * and playing the rotation animation while moving forward.
    */
-throw() {
+  throw() {
     this.speedY = 30;
     this.applyGravity();
 
@@ -40,12 +40,10 @@ throw() {
       this.playAnimation(this.BOTTLE_ROTATION);
 
       if (this.otherDirection) {
-        this.x -= 10; 
+        this.x -= 10;
       } else {
-        this.x += 10; 
+        this.x += 10;
       }
-
     }, 25);
   }
-
 }

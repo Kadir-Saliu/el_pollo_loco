@@ -89,7 +89,6 @@ class World {
   /**
    * Checks collisions between the character and all enemies.
    * Determines whether the character performs a stomp or takes damage.
-   * Delegates stomp and damage handling to separate helper functions.
    */
   checkCollisionEnemyWithCharacter() {
     for (let enemy of this.level.enemies) {
@@ -104,10 +103,7 @@ class World {
 
   /**
    * Handles stomp logic when the character lands on an enemy from above.
-   * Kills all enemies currently colliding with the character (multi-stomp),
-   * triggers a bounce jump, and removes defeated enemies from the level.
-   *
-   * @param {Object} enemy - The enemy that triggered the stomp event.
+   * @param {MovableObject} enemy
    */
   handleStomp(enemy) {
     for (let otherEnemy of this.level.enemies) {
@@ -122,8 +118,7 @@ class World {
   }
 
   /**
-   * Applies damage to the character if they collide with an enemy
-   * without performing a stomp. Updates the status bar accordingly.
+   * Applies damage to the character and updates the status bar.
    */
   handleDamage() {
     if (!this.character.isHurt()) {
@@ -186,7 +181,7 @@ class World {
 
   /**
    * Removes a used bottle from the throwable objects list.
-   * @param {ThrowableObject} bottle - The bottle to remove.
+   * @param {ThrowableObject} bottle
    */
   removeUsedBottle(bottle) {
     this.throwableObject = this.throwableObject.filter(
@@ -268,7 +263,7 @@ class World {
 
   /**
    * Draws a single object, flipping it if necessary.
-   * @param {MovableObject} mo - The object to draw.
+   * @param {MovableObject} mo
    */
   addToMap(mo) {
     if (mo.otherDirection) this.flipImage(mo);
@@ -281,7 +276,7 @@ class World {
 
   /**
    * Draws an array of objects.
-   * @param {MovableObject[]} objects - The objects to draw.
+   * @param {MovableObject[]} objects
    */
   addObjectToMap(objects) {
     objects.forEach((o) => this.addToMap(o));
@@ -289,7 +284,7 @@ class World {
 
   /**
    * Flips an object horizontally for mirrored rendering.
-   * @param {MovableObject} mo - The object to flip.
+   * @param {MovableObject} mo
    */
   flipImage(mo) {
     this.ctx.save();
@@ -300,7 +295,7 @@ class World {
 
   /**
    * Restores the original orientation after flipping.
-   * @param {MovableObject} mo - The object to restore.
+   * @param {MovableObject} mo
    */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
