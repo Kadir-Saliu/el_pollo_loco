@@ -308,7 +308,7 @@ h1 {
   }
 }
 
-@media only screen and (max-width: 928px) {
+@media only screen and (max-width: 1000px) {
   canvas {
     width: 100%;
     height: auto;
