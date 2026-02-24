@@ -24,26 +24,18 @@ class ThrowableObject extends MovableObject {
     this.otherDirection = otherDirection;
     this.height = 60;
     this.width = 50;
-    this.otherDirection = this.otherDirection;
     this.throw();
   }
 
   /**
-   * Throws the bottle by applying upward force, enabling gravity,
-   * and playing the rotation animation while moving forward.
+   * Throws the bottle upward and moves it horizontally while rotating.
    */
   throw() {
     this.speedY = 30;
     this.applyGravity();
-
     setInterval(() => {
       this.playAnimation(this.BOTTLE_ROTATION);
-
-      if (this.otherDirection) {
-        this.x -= 10;
-      } else {
-        this.x += 10;
-      }
+      this.x += this.otherDirection ? -10 : 10;
     }, 25);
   }
 }

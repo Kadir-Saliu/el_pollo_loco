@@ -3,6 +3,7 @@ class Cloud extends MovableObject {
   width = 500;
   height = 250;
   speed = 0.5;
+
   constructor(xPosition) {
     super().loadImage("./img/5_background/layers/4_clouds/1.png");
     this.x = xPosition;
@@ -10,7 +11,7 @@ class Cloud extends MovableObject {
   }
 
   /**
-   * Starts the left‑movement loop for the chicken.
+   * Starts the left‑movement loop for the cloud.
    */
   animate() {
     setInterval(() => {
@@ -19,7 +20,7 @@ class Cloud extends MovableObject {
   }
 
   /**
-   * Moves the chicken to the left based on its speed.
+   * Moves the cloud to the left based on its speed.
    */
   moveLeft() {
     this.x -= this.speed;

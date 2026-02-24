@@ -11,18 +11,13 @@ class Chicken extends MovableObject {
     "./img/3_enemies_chicken/chicken_normal/1_walk/3_w.png",
   ];
 
-  IMAGES_DEATH = ["./img/3_enemies_chicken/chicken_normal/2_dead/dead.png",];
+  IMAGES_DEATH = ["./img/3_enemies_chicken/chicken_normal/2_dead/dead.png"];
 
   chickenAudio = new Audio("audio/chicken-noise-228106.mp3");
 
   constructor(xPosition) {
     super();
-    this.offset = {
-      top: 15,
-      bottom: 5,
-      left: 20,
-      right: 20,
-    };
+    this.offset = { top: 15, bottom: 5, left: 20, right: 20 };
     this.loadImage("./img/3_enemies_chicken/chicken_normal/1_walk/1_w.png");
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_DEATH);
@@ -57,9 +52,7 @@ class Chicken extends MovableObject {
    * Moves the chicken left across the screen unless it is dead.
    */
   moveChicken() {
-    if (!this.dead) {
-      this.x -= this.speed;
-    }
+    if (!this.dead) this.x -= this.speed;
   }
 
   /**
@@ -90,9 +83,7 @@ class Chicken extends MovableObject {
         this.stopChickenSound();
         return;
       }
-      if (this.chickenAudio.paused) {
-        this.chickenAudio.play();
-      }
+      if (this.chickenAudio.paused) this.chickenAudio.play();
     }, 1000);
   }
 

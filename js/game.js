@@ -4,7 +4,6 @@ let world;
 let keyboard = new Keyboard();
 let level1;
 
-
 /**
  * Initializes the game on page load.
  */
@@ -20,23 +19,24 @@ function init() {
   checkOrientationBeforeStart();
 }
 
+/**
+ * Initializes and starts a new game session.
+ * Resets UI screens, shows the canvas, creates the level,
+ * initializes the world and mobile controls, triggers chicken audio
+ * and starts the rendering loop.
+ */
 function initGame() {
   gameStopped = false;
-  document.getElementById('winScreen').classList.add('d_none'); 
+  document.getElementById("winScreen").classList.add("d_none");
+  document.getElementById("endScreen").classList.add("d_none");
   hideStartUI();
   showCanvas();
-
   level1 = createLevel1();
   world = new World(canvas, keyboard, level1);
-
   initMobileControls(world);
   chickenAudio();
-
-  world.draw(); 
-  console.log('init game started ');
-  
+  world.draw();
 }
-
 
 /**
  * Plays a sound if the game is not muted.
@@ -112,7 +112,6 @@ function startGame() {
   chickenAudio();
   world.draw();
 }
-
 
 /**
  * Displays the game canvas.
@@ -293,10 +292,8 @@ function toggleFullScreen() {
 function restartGame() {
   clearAllIntervals();
   clearAllTimeouts();
-  cancelAnimationFrame(animationFrameId);
   initGame();
 }
-
 
 /**
  * Returns to the main menu by clearing the auto-start flag and reloading the page.

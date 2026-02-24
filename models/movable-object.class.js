@@ -9,48 +9,31 @@ class MovableObject extends DrawableObject {
   bottle = 0;
   endScreen = document.getElementById("endScreen");
 
-  offset = {
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  };
+  offset = { top: 0, bottom: 0, left: 0, right: 0 };
 
-  /**
-   * Returns the left collision boundary including offset.
-   * @returns {number}
-   */
+  /** Returns the left collision boundary including offset. */
   left() {
     return this.x + this.offset.left;
   }
 
-  /**
-   * Returns the right collision boundary including offset.
-   * @returns {number}
-   */
+  /** Returns the right collision boundary including offset. */
   right() {
     return this.x + this.width - this.offset.right;
   }
 
-  /**
-   * Returns the top collision boundary including offset.
-   * @returns {number}
-   */
+  /** Returns the top collision boundary including offset. */
   top() {
     return this.y + this.offset.top;
   }
 
-  /**
-   * Returns the bottom collision boundary including offset.
-   * @returns {number}
-   */
+  /** Returns the bottom collision boundary including offset. */
   bottom() {
     return this.y + this.height - this.offset.bottom;
   }
 
   /**
    * Applies gravity to the object, updating vertical position and velocity.
-   * Runs at 25 FPS. Objects fall until they reach the ground or move upward.
+   * Runs at 25 FPS.
    */
   applyGravity() {
     setInterval(() => {
@@ -64,30 +47,20 @@ class MovableObject extends DrawableObject {
   /**
    * Determines whether the object is above the ground.
    * Throwable objects always return true.
-   * @returns {boolean}
    */
   isAboveGround() {
-    if (this instanceof ThrowableObject) {
-      return true;
-    }
-    return this.y < 160;
+    return this instanceof ThrowableObject || this.y < 160;
   }
 
   /**
    * Checks whether this object is above another object AND falling downward.
-   * Used for stomp logic.
-   * @param {MovableObject} mo
-   * @returns {boolean}
    */
   isAbove(mo) {
-    const stompMargin = 60;
-    return this.speedY < 0 && this.bottom() - stompMargin <= mo.top();
+    return this.speedY < 0 && this.bottom() - 60 <= mo.top();
   }
 
   /**
    * Checks whether this object collides with another object using AABB detection.
-   * @param {MovableObject} mo
-   * @returns {boolean}
    */
   isColliding(mo) {
     return (
@@ -100,7 +73,6 @@ class MovableObject extends DrawableObject {
 
   /**
    * Applies damage to the object. If energy reaches zero, the game ends.
-   * Also triggers a short hurt state and upward knockback.
    */
   hit() {
     this.energy -= 5;
@@ -110,7 +82,7 @@ class MovableObject extends DrawableObject {
       this.energy = 0;
       this.stopGame();
     } else {
-      this.lastHit = new Date().getTime();
+      this.lastHit = Date.now();
     }
   }
 
@@ -124,99 +96,71 @@ class MovableObject extends DrawableObject {
       this.energy = 0;
       this.winGame();
     } else {
-      this.lastHit = new Date().getTime();
+      this.lastHit = Date.now();
     }
   }
 
   /**
    * Checks whether the object is currently in a hurt state.
    * Hurt state lasts 1 second after being hit.
-   * @returns {boolean}
    */
   isHurt() {
     if (gameStopped) return false;
-    let timepassed = (new Date().getTime() - this.lastHit) / 1000;
-    return timepassed < 1;
+    return (Date.now() - this.lastHit) / 1000 < 1;
   }
 
-  /**
-   * Checks whether the object is dead.
-   * @returns {boolean}
-   */
+  /** Checks whether the object is dead. */
   isDead() {
-    return this.energy == 0;
+    return this.energy === 0;
   }
 
-  /**
-   * Increases the coin counter.
-   * @returns {number}
-   */
+  /** Increases the coin counter. */
   getCoin() {
     return (this.coin += 20);
   }
 
-  /**
-   * Increases the bottle counter.
-   * @returns {number}
-   */
+  /** Increases the bottle counter. */
   getBottle() {
     return (this.bottle += 20);
   }
 
-  /**
-   * Plays the next frame of the given animation sequence.
-   * @param {string[]} images
-   */
+  /** Plays the next frame of the given animation sequence. */
   playAnimation(images) {
-    let i = this.currentImage % images.length;
-    let path = images[i];
-    this.img = this.imageCache[path];
+    const i = this.currentImage % images.length;
+    this.img = this.imageCache[images[i]];
     this.currentImage++;
   }
 
-  /**
-   * Moves the object to the right.
-   */
+  /** Moves the object to the right. */
   moveRight() {
     this.x += this.speed;
     this.otherDirection = false;
   }
 
-  /**
-   * Moves the object to the left.
-   */
+  /** Moves the object to the left. */
   moveLeft() {
     this.x -= this.speed;
     this.otherDirection = true;
   }
 
-  /**
-   * Makes the object jump by applying upward velocity.
-   */
+  /** Makes the object jump by applying upward velocity. */
   jump() {
     if (gameStopped) return;
     this.speedY = 30;
     playSound(this.jumpAudio);
   }
 
-  /**
-   * Ends the game and shows the end screen.
-   */
+  /** Ends the game and shows the end screen. */
   stopGame() {
     this.showEndScreen(endScreen);
   }
 
-  /**
-   * Triggers the win screen.
-   */
+  /** Triggers the win screen. */
   winGame() {
     this.showEndScreen(winScreen);
   }
 
-  /**
-   * Displays the given end screen and hides the canvas.
-   * @param {HTMLElement} screen
-   */
+  /** Displays the given end screen and hides the canvas. */
   showEndScreen(screen) {
     document.getElementById("canvasWrapper").classList.add("d_none");
     canvas.classList.add("d_none");

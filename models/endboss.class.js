@@ -10,7 +10,7 @@ class Endboss extends MovableObject {
     "./img/4_enemie_boss_chicken/1_walk/G1.png",
     "./img/4_enemie_boss_chicken/1_walk/G2.png",
     "./img/4_enemie_boss_chicken/1_walk/G3.png",
-    "./img/4_enemie_boss_chicken/1_walk/G4.png"
+    "./img/4_enemie_boss_chicken/1_walk/G4.png",
   ];
 
   IMAGES_ALERT = [
@@ -21,7 +21,7 @@ class Endboss extends MovableObject {
     "./img/4_enemie_boss_chicken/2_alert/G9.png",
     "./img/4_enemie_boss_chicken/2_alert/G10.png",
     "./img/4_enemie_boss_chicken/2_alert/G11.png",
-    "./img/4_enemie_boss_chicken/2_alert/G12.png"
+    "./img/4_enemie_boss_chicken/2_alert/G12.png",
   ];
 
   IMAGES_ATTACK = [
@@ -32,19 +32,19 @@ class Endboss extends MovableObject {
     "./img/4_enemie_boss_chicken/3_attack/G17.png",
     "./img/4_enemie_boss_chicken/3_attack/G18.png",
     "./img/4_enemie_boss_chicken/3_attack/G19.png",
-    "./img/4_enemie_boss_chicken/3_attack/G20.png"
+    "./img/4_enemie_boss_chicken/3_attack/G20.png",
   ];
 
   IMAGES_HURT = [
     "./img/4_enemie_boss_chicken/4_hurt/G21.png",
     "./img/4_enemie_boss_chicken/4_hurt/G22.png",
-    "./img/4_enemie_boss_chicken/4_hurt/G23.png"
+    "./img/4_enemie_boss_chicken/4_hurt/G23.png",
   ];
 
   IMAGES_DEAD = [
     "./img/4_enemie_boss_chicken/5_dead/G24.png",
     "./img/4_enemie_boss_chicken/5_dead/G25.png",
-    "./img/4_enemie_boss_chicken/5_dead/G26.png"
+    "./img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
   hadFirstContact = false;
@@ -65,9 +65,16 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_DEAD);
     this.world = world;
     this.x = 1800;
-    allSounds.push(this.endbossHurtAudio, this.endbossAlertAudio, this.endbossDeadAudio);
+    allSounds.push(
+      this.endbossHurtAudio,
+      this.endbossAlertAudio,
+      this.endbossDeadAudio,
+    );
   }
 
+  /**
+   * Controls the endboss behavior loop, evaluating states in priority order.
+   */
   animate() {
     setInterval(() => {
       if (this.handleDeathOrHurt()) return;
@@ -78,6 +85,10 @@ class Endboss extends MovableObject {
     }, 300);
   }
 
+  /**
+   * Handles death or hurt animation states.
+   * @returns {boolean} Whether a state was handled.
+   */
   handleDeathOrHurt() {
     if (this.isDead()) {
       this.playAnimation(this.IMAGES_DEAD);
@@ -91,6 +102,10 @@ class Endboss extends MovableObject {
     return false;
   }
 
+  /**
+   * Handles the first contact trigger when the character approaches.
+   * @returns {boolean} Whether first contact logic was executed.
+   */
   handleFirstContact() {
     if (!this.hadFirstContact) {
       if (this.world.character.x <= 1360) return true;
@@ -101,6 +116,10 @@ class Endboss extends MovableObject {
     return false;
   }
 
+  /**
+   * Plays alert animation and sound for 3 seconds.
+   * @returns {boolean} Whether alert phase is active.
+   */
   handleAlertPhase() {
     if (Date.now() - this.alertStartTime < 3000) {
       if (!this.alertSoundPlayed) {
@@ -113,6 +132,10 @@ class Endboss extends MovableObject {
     return false;
   }
 
+  /**
+   * Plays attack animation for 1 second after alert phase ends.
+   * @returns {boolean} Whether attack phase is active.
+   */
   handleAttackPhase() {
     if (!this.alertOver) {
       this.alertOver = true;
@@ -126,11 +149,17 @@ class Endboss extends MovableObject {
     return false;
   }
 
+  /**
+   * Plays walking animation and moves toward the character.
+   */
   playWalkAndFollow() {
     this.playAnimation(this.IMAGES_WALK);
     this.followCharacter();
   }
 
+  /**
+   * Moves the endboss toward the character or attacks if in range.
+   */
   followCharacter() {
     const char = this.world.character;
     const distance = this.x - char.x;
@@ -148,6 +177,9 @@ class Endboss extends MovableObject {
     this.playAnimation(this.IMAGES_ATTACK);
   }
 
+  /**
+   * Applies damage to the endboss and triggers death if energy reaches zero.
+   */
   hitEndboss() {
     this.energy -= 33;
     if (this.energy <= 0) {
@@ -157,12 +189,14 @@ class Endboss extends MovableObject {
     this.lastHit = Date.now();
   }
 
+  /**
+   * Handles full death sequence including audio, animation, and cleanup.
+   */
   handleDeath() {
     this.energy = 0;
     this.dead = true;
     this.stopAllChickenAudioSystem();
     this.playEndbossDeathSound();
-
     this.playDeathAnimationFully(() => {
       gameStopped = true;
       this.winGame();
@@ -170,14 +204,20 @@ class Endboss extends MovableObject {
     });
   }
 
+  /**
+   * Stops all chicken-related audio systems.
+   */
   stopAllChickenAudioSystem() {
     stopAllChickenSounds();
     stopAllSounds();
-    this.world.level.enemies.forEach(enemy => {
+    this.world.level.enemies.forEach((enemy) => {
       if (enemy instanceof Chicken) enemy.stopChickenSound();
     });
   }
 
+  /**
+   * Plays the endboss death sound and resets it after 1 second.
+   */
   playEndbossDeathSound() {
     playSound(this.endbossDeadAudio);
     setTimeout(() => {
@@ -186,18 +226,31 @@ class Endboss extends MovableObject {
     }, 1000);
   }
 
+  /**
+   * Removes the endboss from the enemy list after a delay.
+   */
   scheduleEndbossRemoval() {
     setTimeout(() => {
-      this.world.level.enemies = this.world.level.enemies.filter(e => e !== this);
+      if (gameStopped) return;
+      this.world.level.enemies = this.world.level.enemies.filter(
+        (e) => e !== this,
+      );
     }, 1500);
   }
 
+  /**
+   * Plays the full death animation frame by frame before executing a callback.
+   * @param {Function} callback - Function to execute after animation completes.
+   */
   playDeathAnimationFully(callback) {
-    let frameIndex = 0;
+    let frame = 0;
     const interval = setInterval(() => {
+      if (!this.world || gameStopped) return clearInterval(interval);
+
       this.playAnimation(this.IMAGES_DEAD);
-      frameIndex++;
-      if (frameIndex >= this.IMAGES_DEAD.length) {
+      frame++;
+
+      if (frame >= this.IMAGES_DEAD.length) {
         clearInterval(interval);
         callback();
       }

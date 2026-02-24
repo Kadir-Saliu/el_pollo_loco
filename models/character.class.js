@@ -83,6 +83,7 @@ class Character extends MovableObject {
   handleMovement() {
     if (gameStopped) return;
     if (!this.world || !this.world.keyboard) return;
+
     if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
       this.moveRight();
     }
@@ -92,13 +93,13 @@ class Character extends MovableObject {
     if (this.world.keyboard.SPACE && !this.isAboveGround()) {
       this.jump();
     }
+
     this.world.camera_x = -this.x + 100;
   }
 
   /**
    * Controls the character's animation flow by delegating to
-   * death, hurt, or movement animation handlers. The first
-   * matching state stops further processing.
+   * death, hurt, or movement animation handlers.
    */
   handleAnimation() {
     if (gameStopped) return;
@@ -142,6 +143,7 @@ class Character extends MovableObject {
   handleMovementAnimation() {
     if (gameStopped) return;
     this.isHurtSoundPlayed = false;
+
     if (this.isAboveGround()) {
       this.playJumpAnimation();
     } else {
@@ -186,6 +188,25 @@ class Character extends MovableObject {
   playWalkingAnimation() {
     if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
       this.playAnimation(this.IMAGES_WALKING);
+    }
+  }
+
+  /**
+   * Applies damage to the character, triggers knockback,
+   * clamps vertical position, and handles death or last-hit timestamp.
+   *
+   * @param {number} damage - The amount of damage to apply.
+   */
+  hitCharacter(damage) {
+    this.energy -= damage;
+    this.x += this.otherDirection ? 20 : -20;
+    if (this.y > 160) this.y = 160;
+
+    if (this.energy < 0) {
+      this.energy = 0;
+      this.stopGame();
+    } else {
+      this.lastHit = new Date().getTime();
     }
   }
 }

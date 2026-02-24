@@ -24,9 +24,7 @@ class World {
     this.run();
   }
 
-  /**
-   * Links the world to the character and initializes endboss behavior.
-   */
+  /** Links the world to the character and initializes endboss behavior. */
   setWorld() {
     this.character.world = this;
     this.level.enemies.forEach((enemy) => {
@@ -37,10 +35,7 @@ class World {
     });
   }
 
-  /**
-   * Starts the main game loop for collision checks and throw logic.
-   * Runs at 60 FPS.
-   */
+  /** Starts the main game loop for collision checks and throw logic. */
   run() {
     setInterval(() => {
       if (gameStopped) return;
@@ -49,20 +44,13 @@ class World {
     }, 1000 / 60);
   }
 
-  /**
-   * Checks whether the player can throw a bottle and triggers the action.
-   */
+  /** Checks whether the player can throw a bottle. */
   checkThrowObjects() {
     if (!this.keyboard.D || this.character.bottle <= 0) return;
-
-    if (Date.now() - this.lastBottleThrow > this.cooldown) {
-      this.throwBottle();
-    }
+    if (Date.now() - this.lastBottleThrow > this.cooldown) this.throwBottle();
   }
 
-  /**
-   * Creates and launches a throwable bottle and updates the bottle status bar.
-   */
+  /** Creates and launches a throwable bottle. */
   throwBottle() {
     this.lastBottleThrow = Date.now();
     const bottle = new ThrowableObject(
@@ -76,9 +64,7 @@ class World {
     this.checkCollision();
   }
 
-  /**
-   * Runs all collision checks for enemies, coins, bottles and thrown bottles.
-   */
+  /** Runs all collision checks. */
   checkCollision() {
     this.checkCollisionEnemyWithCharacter();
     this.checkCollisionCharacterWithCoin();
@@ -86,51 +72,35 @@ class World {
     this.checkCollisionEnemyWithThrowableBottle();
   }
 
-  /**
-   * Checks collisions between the character and all enemies.
-   * Determines whether the character performs a stomp or takes damage.
-   */
+  /** Checks collisions between the character and enemies. */
   checkCollisionEnemyWithCharacter() {
     for (let enemy of this.level.enemies) {
       if (enemy.dead || !this.character.isColliding(enemy)) continue;
+
       if (this.character.isAbove(enemy)) {
         this.handleStomp(enemy);
         return;
       }
-      this.handleDamage();
+
+      if (!this.character.isHurt()) {
+        this.character.hitCharacter(enemy instanceof Endboss ? 20 : 5);
+      }
+
+      this.statusBar.setPercentage(this.character.energy);
     }
   }
 
-  /**
-   * Handles stomp logic when the character lands on an enemy from above.
-   * @param {MovableObject} enemy
-   */
+  /** Handles stomp logic. */
   handleStomp(enemy) {
     for (let otherEnemy of this.level.enemies) {
-      if (this.character.isColliding(otherEnemy)) {
-        otherEnemy.die();
-      }
+      if (this.character.isColliding(otherEnemy)) otherEnemy.die();
     }
-
     this.character.jump();
     this.character.y = 160;
     this.removeDeadChicken();
   }
 
-  /**
-   * Applies damage to the character and updates the status bar.
-   */
-  handleDamage() {
-    if (gameStopped) return;
-    if (!this.character.isHurt()) {
-      this.character.hit();
-      this.statusBar.setPercentage(this.character.energy);
-    }
-  }
-
-  /**
-   * Handles coin pickups and updates the coin status bar.
-   */
+  /** Handles coin pickups. */
   checkCollisionCharacterWithCoin() {
     this.level.coin = this.level.coin.filter((coin) => {
       if (this.character.isColliding(coin)) {
@@ -143,9 +113,7 @@ class World {
     });
   }
 
-  /**
-   * Handles bottle pickups and updates the bottle status bar.
-   */
+  /** Handles bottle pickups. */
   checkCollisionCharacterWithBottle() {
     this.level.bottles = this.level.bottles.filter((bottle) => {
       if (this.character.isColliding(bottle)) {
@@ -157,10 +125,7 @@ class World {
     });
   }
 
-  /**
-   * Handles collisions between thrown bottles and enemies.
-   * Includes splash animation, bottle removal, and enemy damage.
-   */
+  /** Handles collisions between thrown bottles and enemies. */
   checkCollisionEnemyWithThrowableBottle() {
     if (gameStopped) return;
     this.level.enemies.forEach((enemy) => {
@@ -181,77 +146,53 @@ class World {
     });
   }
 
-  /**
-   * Removes a used bottle from the throwable objects list.
-   * @param {ThrowableObject} bottle
-   */
+  /** Removes a used bottle. */
   removeUsedBottle(bottle) {
     this.throwableObject = this.throwableObject.filter(
       (currentBottle) => currentBottle !== bottle,
     );
   }
 
-  /**
-   * Removes dead chickens from the enemy list after a short delay.
-   */
+  /** Removes dead chickens after a delay. */
   removeDeadChicken() {
     setTimeout(() => {
       this.level.enemies = this.level.enemies.filter((enemy) => !enemy.dead);
     }, 1000);
   }
 
-  /**
-   * Clears the canvas and draws all world elements.
-   * Uses requestAnimationFrame for smooth rendering.
-   */
+  /** Clears the canvas and draws all world elements. */
   draw() {
-    
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawBackground();
     this.drawGameObjects();
     this.drawHUD();
     this.drawEndbossStatus();
-    console.log('DRAW RUnning');
-    
-    animationFrameId = requestAnimationFrame(() => this.draw());
+    requestAnimationFrame(() => this.draw());
   }
 
-  /**
-   * Draws background objects with camera offset.
-   */
+  /** Draws background objects. */
   drawBackground() {
     this.ctx.translate(this.camera_x, 0);
     this.addObjectToMap(this.level.backgroundObjects);
     this.ctx.translate(-this.camera_x, 0);
   }
 
-  /**
-   * Draws HUD elements such as health, coins, and bottles.
-   */
+  /** Draws HUD elements. */
   drawHUD() {
     this.addToMap(this.statusBar);
     this.addToMap(this.coinStatusBar);
     this.addToMap(this.bottleStatusBar);
   }
 
-  /**
-   * Draws the endboss status bar once the player reaches the boss area.
-   */
+  /** Draws the endboss status bar. */
   drawEndbossStatus() {
-    if (this.character.x > 1300) {
-      this.hadFirstContactWithEndboss = true;
-    }
-    if (this.hadFirstContactWithEndboss) {
-      this.addToMap(this.endbossStautsBar);
-    }
+    if (this.character.x > 1300) this.hadFirstContactWithEndboss = true;
+    if (this.hadFirstContactWithEndboss) this.addToMap(this.endbossStautsBar);
   }
 
-  /**
-   * Draws all game objects with camera offset.
-   */
+  /** Draws all game objects. */
   drawGameObjects() {
     this.ctx.translate(this.camera_x, 0);
-
     [
       this.character,
       ...this.level.clouds,
@@ -260,35 +201,23 @@ class World {
       ...this.level.bottles,
       ...this.throwableObject,
     ].forEach((obj) => this.addToMap(obj));
-
     this.ctx.translate(-this.camera_x, 0);
   }
 
-  /**
-   * Draws a single object, flipping it if necessary.
-   * @param {MovableObject} mo
-   */
+  /** Draws a single object. */
   addToMap(mo) {
     if (mo.otherDirection) this.flipImage(mo);
-
     mo.draw(this.ctx);
     mo.drawFrame(this.ctx);
-
     if (mo.otherDirection) this.flipImageBack(mo);
   }
 
-  /**
-   * Draws an array of objects.
-   * @param {MovableObject[]} objects
-   */
+  /** Draws an array of objects. */
   addObjectToMap(objects) {
     objects.forEach((o) => this.addToMap(o));
   }
 
-  /**
-   * Flips an object horizontally for mirrored rendering.
-   * @param {MovableObject} mo
-   */
+  /** Flips an object horizontally. */
   flipImage(mo) {
     this.ctx.save();
     this.ctx.translate(mo.width, 0);
@@ -296,10 +225,7 @@ class World {
     mo.x = mo.x * -1;
   }
 
-  /**
-   * Restores the original orientation after flipping.
-   * @param {MovableObject} mo
-   */
+  /** Restores original orientation. */
   flipImageBack(mo) {
     mo.x = mo.x * -1;
     this.ctx.restore();

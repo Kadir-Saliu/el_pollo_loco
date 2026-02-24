@@ -89,7 +89,7 @@ function createLevel1() {
  */
 function generateSpawnX(usedPositions, minX, maxX, minDistance) {
   let xPosition;
-
+  usedPositions = [];
   do {
     xPosition = Math.floor(minX + Math.random() * (maxX - minX));
   } while (
@@ -97,7 +97,6 @@ function generateSpawnX(usedPositions, minX, maxX, minDistance) {
       (existing) => Math.abs(existing - xPosition) < minDistance,
     )
   );
-
   usedPositions.push(xPosition);
   return xPosition;
 }
