@@ -290,6 +290,9 @@ function toggleFullScreen() {
 function restartGame() {
   clearAllIntervals();
   clearAllTimeouts();
+  usedChickenPositions = [];
+  usedCloudPositions = [];
+
   initGame();
 }
 
