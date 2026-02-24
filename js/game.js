@@ -35,7 +35,6 @@ function initGame() {
   world = new World(canvas, keyboard, level1);
   initMobileControls(world);
   chickenAudio();
-  world.draw();
 }
 
 /**
@@ -110,7 +109,6 @@ function startGame() {
   world = new World(canvas, keyboard, level1);
   initMobileControls(world);
   chickenAudio();
-  world.draw();
 }
 
 /**

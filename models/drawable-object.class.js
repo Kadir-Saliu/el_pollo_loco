@@ -30,13 +30,6 @@ class DrawableObject {
   }
 
   /**
-   * Draws a debug frame around the object.
-   * Intended for subclasses that implement hitbox visualization.
-   * @param {CanvasRenderingContext2D} ctx - The rendering context to draw on.
-   */
-  drawFrame(ctx) {}
-
-  /**
    * Loads multiple images into the object's image cache.
    * @param {string[]} arr - Array of image file paths to load.
    */
