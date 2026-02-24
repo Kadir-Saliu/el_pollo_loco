@@ -36,6 +36,7 @@
 
     <!-- 3. Statusbars -->
     <script src="./models/statusbar/status-bar.class.js"></script>
+    <script src="./models/statusbar/health-statusbar.class.js"></script>
     <script src="./models/statusbar/coin-status-bar.class.js"></script>
     <script src="./models/statusbar/bottle-status-bar.class.js"></script>
     <script src="./models/statusbar/endboss-status-bar.class.js"></script>
@@ -63,9 +64,17 @@
       <h2>Hilf Pepe, die Münzen zu sammeln und den Endboss zu besiegen!</h2>
 
       <div class="button-container">
-        <button id="startBtn" class="btn btn-secondary start-btn" onclick="startGame()" >Start Game </button>
+        <button
+          id="startBtn"
+          class="btn btn-secondary start-btn"
+          onclick="startGame()"
+        >
+          Start Game
+        </button>
         <button class="btn btn-info" onclick="showControls()">Controls</button>
-        <button class="btn btn-light" onclick="showImpressum()">Impressum</button>
+        <button class="btn btn-light" onclick="showImpressum()">
+          Impressum
+        </button>
       </div>
 
       <img
@@ -124,7 +133,7 @@
         <button id="canvas-arrow-right" class="canvas-arrow-right">></button>
         <button id="canvas-arrow-up" class="canvas-arrow-up">^</button>
         <button id="canvas-arrow-throw" class="canvas-arrow-throw">
-          <img src="./img/6_salsa_bottle/salsa_bottle.png" alt="">
+          <img src="./img/6_salsa_bottle/salsa_bottle.png" alt="" />
         </button>
       </div>
     </div>
@@ -154,106 +163,108 @@
     </section>
 
     <section id="impressum" class="d_none">
-  <button onclick="hideImpressum()" class="close-btn-controls">✕</button>
+      <button onclick="hideImpressum()" class="close-btn-controls">✕</button>
 
-  <div class="impressum-container">
-    <h2>🐔 Impressum 🐔</h2>
+      <div class="impressum-container">
+        <h2>🐔 Impressum 🐔</h2>
 
-    <div class="impressum-content">
+        <div class="impressum-content">
+          <!-- Betreiber -->
+          <div class="impressum-section">
+            <h3>Angaben gemäß § 5 TMG</h3>
+            <p>
+              Betreiber der Website:<br />
+              Kadir Saliu<br />
+              Speyerer Straße 22<br />
+              90443 Nürnberg<br />
+              Deutschland
+            </p>
+            <p>
+              <strong>Kontakt:</strong><br />
+              <a href="mailto:kadir_saliu@hotmail.de">kadir_saliu@hotmail.de</a>
+            </p>
+          </div>
 
-      <!-- Betreiber -->
-      <div class="impressum-section">
-        <h3>Angaben gemäß § 5 TMG</h3>
-        <p>
-          Betreiber der Website:<br>
-          Kadir Saliu<br>
-          Speyerer Straße 22<br>
-          90443 Nürnberg<br>
-          Deutschland
-        </p>
-        <p>
-          <strong>Kontakt:</strong><br>
-          <a href="mailto:kadir_saliu@hotmail.de">kadir_saliu@hotmail.de</a>
-        </p>
+          <!-- Verantwortlich -->
+          <div class="impressum-section">
+            <h3>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
+            <p>
+              Kadir Saliu<br />
+              Speyerer Straße 22<br />
+              90443 Nürnberg<br />
+              Deutschland
+            </p>
+          </div>
+
+          <!-- Spielbeschreibung -->
+          <div class="impressum-section">
+            <h3>Spielbeschreibung</h3>
+            <p>
+              El Pollo Loco ist ein browserbasiertes Jump‑and‑Run‑Spiel, in dem
+              der Spieler den Charakter Pepe steuert. Ziel ist es, Münzen zu
+              sammeln und den Endboss zu besiegen. Das Spiel nutzt HTML5 Canvas
+              für die Grafiken und JavaScript für die Spiellogik.
+            </p>
+          </div>
+
+          <!-- Ressourcen -->
+          <div class="impressum-section">
+            <h3>Verwendete Ressourcen</h3>
+            <p>
+              Bilder: Pixabay, Freepik, OpenGameArt<br />
+              Fonts: Google Fonts, Splash Font<br />
+              Audio: Freesound, Zapsplat
+            </p>
+          </div>
+
+          <!-- Haftung -->
+          <div class="impressum-section">
+            <h3>Haftungsausschluss</h3>
+            <p>
+              Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt.
+              Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte
+              wird jedoch keine Gewähr übernommen.
+            </p>
+            <p>
+              Diese Website kann Links zu externen Websites enthalten, auf deren
+              Inhalte kein Einfluss besteht. Für die Inhalte der verlinkten
+              Seiten ist stets der jeweilige Anbieter verantwortlich.
+            </p>
+            <p>
+              Alle Inhalte des Spiels und der Website sind urheberrechtlich
+              geschützt. Eine Vervielfältigung oder Weiterverarbeitung ist ohne
+              Zustimmung nicht gestattet.
+            </p>
+          </div>
+
+          <!-- Datenschutz -->
+          <div class="impressum-section">
+            <h3>Datenschutz</h3>
+            <p>
+              Dieses Spiel speichert keine personenbezogenen Daten auf externen
+              Servern. Es wird ausschließlich der lokale Browser‑Speicher
+              (localStorage) für Einstellungen wie Ton oder Spielstatus
+              verwendet.
+            </p>
+          </div>
+
+          <!-- Kontakt -->
+          <div class="impressum-section">
+            <h3>Kontakt</h3>
+            <p>
+              Für Fragen oder Anregungen:
+              <a href="mailto:kadir_saliu@hotmail.de">kadir_saliu@hotmail.de</a>
+            </p>
+          </div>
+        </div>
+
+        <button
+          onclick="hideImpressum()"
+          class="btn btn-secondary impressum-close-btn"
+        >
+          Zurück zum Spiel
+        </button>
       </div>
-
-      <!-- Verantwortlich -->
-      <div class="impressum-section">
-        <h3>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h3>
-        <p>
-          Kadir Saliu<br>
-          Speyerer Straße 22<br>
-          90443 Nürnberg<br>
-          Deutschland
-        </p>
-      </div>
-
-      <!-- Spielbeschreibung -->
-      <div class="impressum-section">
-        <h3>Spielbeschreibung</h3>
-        <p>
-          El Pollo Loco ist ein browserbasiertes Jump‑and‑Run‑Spiel, in dem der Spieler
-          den Charakter Pepe steuert. Ziel ist es, Münzen zu sammeln und den Endboss zu
-          besiegen. Das Spiel nutzt HTML5 Canvas für die Grafiken und JavaScript für die
-          Spiellogik.
-        </p>
-      </div>
-
-      <!-- Ressourcen -->
-      <div class="impressum-section">
-        <h3>Verwendete Ressourcen</h3>
-        <p>
-          Bilder: Pixabay, Freepik, OpenGameArt<br>
-          Fonts: Google Fonts, Splash Font<br>
-          Audio: Freesound, Zapsplat
-        </p>
-      </div>
-
-      <!-- Haftung -->
-      <div class="impressum-section">
-        <h3>Haftungsausschluss</h3>
-        <p>
-          Die Inhalte dieser Website wurden mit größter Sorgfalt erstellt. Für die
-          Richtigkeit, Vollständigkeit und Aktualität der Inhalte wird jedoch keine
-          Gewähr übernommen.
-        </p>
-        <p>
-          Diese Website kann Links zu externen Websites enthalten, auf deren Inhalte
-          kein Einfluss besteht. Für die Inhalte der verlinkten Seiten ist stets der
-          jeweilige Anbieter verantwortlich.
-        </p>
-        <p>
-          Alle Inhalte des Spiels und der Website sind urheberrechtlich geschützt.
-          Eine Vervielfältigung oder Weiterverarbeitung ist ohne Zustimmung nicht
-          gestattet.
-        </p>
-      </div>
-
-      <!-- Datenschutz -->
-      <div class="impressum-section">
-        <h3>Datenschutz</h3>
-        <p>
-          Dieses Spiel speichert keine personenbezogenen Daten auf externen Servern.
-          Es wird ausschließlich der lokale Browser‑Speicher (localStorage) für
-          Einstellungen wie Ton oder Spielstatus verwendet.
-        </p>
-      </div>
-
-      <!-- Kontakt -->
-      <div class="impressum-section">
-        <h3>Kontakt</h3>
-        <p>
-          Für Fragen oder Anregungen:  
-          <a href="mailto:kadir_saliu@hotmail.de">kadir_saliu@hotmail.de</a>
-        </p>
-      </div>
-
-    </div>
-
-    <button onclick="hideImpressum()" class="btn btn-secondary impressum-close-btn">
-      Zurück zum Spiel
-    </button>
-  </div>
-</section>
+    </section>
   </body>
 </html>

@@ -1,44 +1,40 @@
 class StatusBar extends DrawableObject {
-  IMAGES = [
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/0.png",
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/20.png",
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/40.png",
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/60.png",
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/80.png",
-    "./img/7_statusbars/1_statusbar/2_statusbar_health/blue/100.png",
-  ];
-
-  percentage = 100;
+  IMAGES = [];
+  percentage = 0;
 
   /**
-   * Creates a new health status bar and initializes its position,
-   * size, images, and starting percentage.
+   * Creates a flexible status bar.
+   * @param {string[]} images
+   * @param {number} x
+   * @param {number} y
+   * @param {number} width
+   * @param {number} height
+   * @param {number} percentage
    */
-  constructor() {
+  constructor(images, x, y, width, height, percentage) {
     super();
+    this.IMAGES = images;
     this.loadImages(this.IMAGES);
-    this.x = 30;
-    this.y = 0;
-    this.width = 200;
-    this.height = 60;
-    this.setPercentage(100);
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.setPercentage(percentage);
   }
 
   /**
-   * Updates the percentage value and sets the corresponding image.
-   *
-   * @param {number} percentage - The new percentage value.
+   * Sets the percentage and updates the displayed image.
+   * @param {number} percentage
    */
   setPercentage(percentage) {
     this.percentage = percentage;
-    let path = this.IMAGES[this.resolveImageIndex()];
+    const path = this.IMAGES[this.resolveImageIndex()];
     this.img = this.imageCache[path];
   }
 
   /**
-   * Returns the image index based on the current percentage (0–100).
-   *
-   * @returns {number} Image index from 0 to 5.
+   * Resolves the correct image index based on percentage.
+   * @returns {number}
    */
   resolveImageIndex() {
     if (this.percentage >= 100) return 5;

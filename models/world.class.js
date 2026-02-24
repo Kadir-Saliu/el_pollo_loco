@@ -5,10 +5,12 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
-  statusBar = new StatusBar();
+
+  statusBar = new HealthStatusBar();
   coinStatusBar = new CoinStatusBar();
   bottleStatusBar = new BottleStatusBar();
   endbossStautsBar = new EndbossStatusBar();
+
   hadFirstContactWithEndboss = false;
   throwableObject = [];
   cooldown = 2000;
