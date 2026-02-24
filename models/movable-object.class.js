@@ -147,6 +147,7 @@ class MovableObject extends DrawableObject {
   jump() {
     if (gameStopped) return;
     this.speedY = 30;
+    this.justLanded = false;
     playSound(this.jumpAudio);
   }
 

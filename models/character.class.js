@@ -12,14 +12,18 @@ class Character extends MovableObject {
     "./img/2_character_pepe/2_walk/W-26.png",
   ];
 
-  IMAGES_JUMPING = [
+  IMAGES_JUMP_UP = [
     "./img/2_character_pepe/3_jump/J-31.png",
     "./img/2_character_pepe/3_jump/J-32.png",
     "./img/2_character_pepe/3_jump/J-33.png",
     "./img/2_character_pepe/3_jump/J-34.png",
     "./img/2_character_pepe/3_jump/J-35.png",
     "./img/2_character_pepe/3_jump/J-36.png",
-    "./img/2_character_pepe/3_jump/J-37.png",
+  ];
+
+  IMAGES_JUMP_FALL = ["./img/2_character_pepe/3_jump/J-37.png"];
+
+  IMAGES_JUMP_LAND = [
     "./img/2_character_pepe/3_jump/J-38.png",
     "./img/2_character_pepe/3_jump/J-39.png",
   ];
@@ -45,16 +49,18 @@ class Character extends MovableObject {
 
   isHurtSoundPlayed = false;
   world;
+  justLanded = false;
 
   /**
-   * Creates a new character instance, loads all animations,
-   * applies gravity, and starts movement/animation loops.
+   * Creates the character, loads animations and starts movement loops.
    */
   constructor() {
     super().loadImage("./img/2_character_pepe/2_walk/W-21.png");
     this.offset = { top: 120, bottom: 0, left: 10, right: 10 };
     this.loadImages(this.IMAGES_WALKING);
-    this.loadImages(this.IMAGES_JUMPING);
+    this.loadImages(this.IMAGES_JUMP_UP);
+    this.loadImages(this.IMAGES_JUMP_FALL);
+    this.loadImages(this.IMAGES_JUMP_LAND);
     this.loadImages(this.IMAGES_DEAD);
     this.loadImages(this.IMAGES_HURT);
     this.applyGravity();
@@ -67,50 +73,42 @@ class Character extends MovableObject {
    */
   animate() {
     setInterval(() => {
-      if (gameStopped) return;
-      this.handleMovement();
+      if (!gameStopped) this.handleMovement();
     }, 1000 / 60);
 
     setInterval(() => {
-      if (gameStopped) return;
-      this.handleAnimation();
-    }, 50);
+      if (!gameStopped) this.handleAnimation();
+    }, 100);
   }
 
   /**
-   * Handles character movement based on keyboard input.
+   * Handles movement based on keyboard input.
    */
   handleMovement() {
-    if (gameStopped) return;
     if (!this.world || !this.world.keyboard) return;
 
-    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
+    if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x)
       this.moveRight();
-    }
-    if (this.world.keyboard.LEFT && this.x > 0) {
-      this.moveLeft();
-    }
-    if (this.world.keyboard.SPACE && !this.isAboveGround()) {
-      this.jump();
-    }
+
+    if (this.world.keyboard.LEFT && this.x > 0) this.moveLeft();
+
+    if (this.world.keyboard.SPACE && !this.isAboveGround()) this.jump();
 
     this.world.camera_x = -this.x + 100;
   }
 
   /**
-   * Controls the character's animation flow by delegating to
-   * death, hurt, or movement animation handlers.
+   * Controls animation flow: death, hurt or movement.
    */
   handleAnimation() {
-    if (gameStopped) return;
     if (this.handleDeathAnimation()) return;
     if (this.handleHurtAnimation()) return;
     this.handleMovementAnimation();
   }
 
   /**
-   * Handles the death animation.
-   * @returns {boolean} Whether the character is dead.
+   * Plays death animation.
+   * @returns {boolean}
    */
   handleDeathAnimation() {
     if (!this.isDead()) return false;
@@ -120,11 +118,10 @@ class Character extends MovableObject {
   }
 
   /**
-   * Handles the hurt animation and sound.
-   * @returns {boolean} Whether the character is hurt.
+   * Plays hurt animation and sound.
+   * @returns {boolean}
    */
   handleHurtAnimation() {
-    if (gameStopped) return;
     if (!this.isHurt()) return false;
 
     this.playAnimation(this.IMAGES_HURT);
@@ -138,64 +135,57 @@ class Character extends MovableObject {
   }
 
   /**
-   * Handles jump or walking animation depending on state.
+   * Plays jump, landing or walking animation.
    */
   handleMovementAnimation() {
-    if (gameStopped) return;
     this.isHurtSoundPlayed = false;
 
     if (this.isAboveGround()) {
+      this.justLanded = false;
       this.playJumpAnimation();
     } else {
-      this.playWalkingAnimation();
+      if (!this.justLanded) this.playLandingAnimation();
+      else this.playWalkingAnimation();
     }
   }
 
   /**
-   * Plays the correct jump animation frame based on jump height.
+   * Plays jump-up or fall animation.
    */
   playJumpAnimation() {
-    const currentHeight = this.getJumpHeight();
-    const frameIndex = this.getJumpFrameIndex(currentHeight);
-    this.img = this.imageCache[this.IMAGES_JUMPING[frameIndex]];
+    if (this.speedY > 0) this.playAnimation(this.IMAGES_JUMP_UP);
+    else if (this.speedY < 0) this.playAnimation(this.IMAGES_JUMP_FALL);
   }
 
   /**
-   * Returns the current jump height above ground.
-   * @returns {number} Height above ground.
+   * Plays landing animation once.
    */
-  getJumpHeight() {
-    const groundY = 160;
-    return groundY - this.y;
+  playLandingAnimation() {
+    if (this.justLanded) return;
+    this.justLanded = true;
+    this.playAnimation(this.IMAGES_JUMP_LAND);
   }
 
   /**
-   * Returns the jump animation frame index based on height.
-   * @param {number} currentHeight - Current jump height.
-   * @returns {number} The resolved frame index.
-   */
-  getJumpFrameIndex(currentHeight) {
-    const maxJumpHeight = 195;
-    const frames = this.IMAGES_JUMPING.length;
-    const heightPerFrame = maxJumpHeight / frames;
-    let index = Math.floor(currentHeight / heightPerFrame);
-    return Math.max(0, Math.min(frames - 1, index));
-  }
-
-  /**
-   * Plays walking animation if movement keys are pressed.
+   * Plays walking animation.
    */
   playWalkingAnimation() {
-    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+    if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT)
       this.playAnimation(this.IMAGES_WALKING);
-    }
   }
 
   /**
-   * Applies damage to the character, triggers knockback,
-   * clamps vertical position, and handles death or last-hit timestamp.
-   *
-   * @param {number} damage - The amount of damage to apply.
+   * Makes the character jump.
+   */
+  jump() {
+    this.speedY = 30;
+    this.justLanded = false;
+    playSound(this.jumpAudio);
+  }
+
+  /**
+   * Applies damage and knockback.
+   * @param {number} damage
    */
   hitCharacter(damage) {
     this.energy -= damage;
